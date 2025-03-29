@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<html lang="fi">
+  <head>
+    <title>Elokuvalista - Rekisteröidy</title>
+  </head>
+
+  <body>
+    <h2>Luo uusi käyttäjä</h2>
+    <form action="/create_user" method="post">
+      <p>
+        Käyttäjätunnus: <br>
+        <input type="text" name="username" required>
+      </p>
+      <p>
+        Salasana: <br>
+        <input type="password" name="password">
+      </p>
+      <p>
+        Vahvista salasana: <br>
+        <input type="password" name="password_confirm">
+      </p>
+      <input type="submit" value="Rekisteröidy">
+    </form>
+
+  </body>
+</html>

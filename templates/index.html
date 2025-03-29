@@ -1,12 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="fi">
 
 <head>
+  <meta charset="utf-8">
   <title>Elokuvalista - Etusivu</title>
 </head>
 
 <body>
   <h1>Elokuvalista</h1>
+
+  {% if session.username %}
+  <h3>
+    Tervetuloa {{ session.username }}!
+  </h3>
+  <br>
+  <a href="/logout">Kirjaudu ulos</a>
+
+  {% else %}
+  <p>Kirjaudu sisään niin näet omat elokuvasi</p>
+  <form action="/login">
+    <input type="submit" value="Kirjaudu sisään">
+  </from>
+  <br>
+  <p>Etkö ole vielä käyttäjä?</p>
+  <a href="/register">Rekisteröidy tästä</a>
+  {% endif %}
 </body>
 
 </html>

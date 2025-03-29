@@ -19,6 +19,6 @@ def last_insert_id():
 
 def query(sql, parameters=[]):
     database = connect_database()
-    result = execute(sql, parameters).fetchall()
+    result = database.execute(sql, parameters).fetchall()
     database.close()
     return result

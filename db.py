@@ -10,7 +10,7 @@ def connect_database():
 def execute(sql, parameters=[]):
     database = connect_database()
     result = database.execute(sql, parameters)
-    database.commit
+    database.commit()
     g.last_insert_id = result.lastrowid
     database.close()
 

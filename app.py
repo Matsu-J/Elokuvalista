@@ -7,6 +7,7 @@ import config
 app = Flask(__name__)
 app.secret_key = config.secret_key()
 
+
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -24,17 +25,18 @@ def create_user():
     confirmed_password = request.form["password_confirm"]
 
     if password != confirmed_password:
-        return "Salasanat eivät täsmää!"
+        return "Salasanat eivät täsmää!" \
+        "<br><a href=""/register"">Yritä uudelleen</a>"
     
     hashed_password = generate_password_hash(password)
 
     try:
         db.execute("INSERT INTO users (username, password_hash) VALUES (?, ?)", [username, hashed_password])
     except:
-        return "Käyttäjätunnus varattu"
+        return "Käyttäjätunnus on jo olemassa" \
+        "<br><a href=""/login"">Kirjaudu sisään?</a>"
     
     return redirect("/")
-
 
 
 @app.route("/login")
@@ -50,13 +52,16 @@ def check_login():
     try:
         hashed_password = db.query("SELECT password_hash FROM users WHERE username = ?", [username])[0][0]
     except:
-        return "Käyttäjätunnusta ei löydy"
+        return "Käyttäjätunnusta ei löydy" \
+        "<br><a href=""/register"">Rekisteröi uusi käyttäjä</a>"
     
     if check_password_hash(hashed_password, password):
         session["username"] = username
         return redirect("/")
     else:
-        return "Väärä tunnus tai salasana"
+        return "Väärä tunnus tai salasana" \
+        "<br><a href=""/login"">Yritä uudelleen</a>"
+        
 
 
 @app.route("/logout")

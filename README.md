@@ -4,7 +4,7 @@ Sovelluksen idea on olla lista, johon käyttäjät voivat lisätä elokuvia joit
 
 ## Sovelluksen toimintojen tilanne:
 
-  ❌ Käyttäjä voi luoda tilin ja kirjautua sisään
+  ✅ Käyttäjä voi luoda tilin ja kirjautua sisään
   
   ❌ Käyttäjä voi lisätä elokuvan katsomislistalle
   

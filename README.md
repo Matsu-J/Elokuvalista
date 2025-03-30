@@ -6,7 +6,7 @@ Sovelluksen idea on olla lista, johon käyttäjät voivat lisätä elokuvia joit
 
   ✅ Käyttäjä voi luoda tilin ja kirjautua sisään
   
-  ❌ Käyttäjä voi lisätä elokuvan katsomislistalle
+  ✅ Käyttäjä voi lisätä elokuvan katsomislistalle
   
   ❌ Käyttäjä voi muokata katsomislistaansa
   

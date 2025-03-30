@@ -63,8 +63,11 @@ def check_login():
         "<br><a href=""/login"">Yritä uudelleen</a>"
         
 
-
 @app.route("/logout")
 def logout():
     del session["username"]
     return redirect("/")
+
+@app.route("/add_movie")
+def add_movie():
+    return render_template("add_movie.html")

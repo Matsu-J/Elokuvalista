@@ -10,10 +10,11 @@
   <h1>Elokuvalista</h1>
 
   {% if session.username %}
-  <h3>
+  <h2>
     Tervetuloa {{ session.username }}!
-  </h3>
-  <br>
+  </h2>
+  <a href="/add_movie">Lisää elokuva listalle</a>
+  <br><br>
   <a href="/logout">Kirjaudu ulos</a>
 
   {% else %}
@@ -25,6 +26,7 @@
   <p>Etkö ole vielä käyttäjä?</p>
   <a href="/register">Rekisteröidy tästä</a>
   {% endif %}
+  
 </body>
 
 </html>

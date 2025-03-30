@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Elokuvalista - Lisää elokuva</title>
+  </head>
+  <body>
+    <h2>
+      Lisää elokuva listalle:
+    </h2>
+    <form action="/create_post" method="post">
+      <p>Elokuvan nimi:</p>
+      <input type="text" name="title" required>
+
+      <p>Elokuvan pituus</p>
+      <input type="text" name="hours" placeholder="tuntia"><br>
+      <input type="text" name="minutes" placeholder="minuuttia">
+
+      <p>Julkaisuvuosi</p>
+      <input type="text" name="release_year">
+      <br><br>
+
+      <input type="checkbox" name="watched">
+      <label for="watched">Katsottu</label>
+      <br><br>
+      
+      <input type="submit" value="Lisää"></input>
+    </form>
+  </body>
+</html>

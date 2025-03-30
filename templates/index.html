@@ -34,9 +34,9 @@
 
   <br>
   {% for post in posts %}
-  <p>
+  <a href="/post/{{post.id}}">
     {{ post.username }} - {{ post.title }}
-  </p>
+  </a>
   {% if post.release_year %}
   <p>
     Julkaisuvuosi: {{ post.release_year }}

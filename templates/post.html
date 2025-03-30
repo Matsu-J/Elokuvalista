@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Elokuavlista</title>
+  </head>
+  <body>
+    <h1>Elokuvalista</h1>
+    <a href="/">Palaa etusivulle</a>
+    <br>
+    <h2>
+      {{ post.title }}
+    </h2>
+    <p>
+      {% if post.release_year %}
+  <p>
+    Julkaisuvuosi: {{ post.release_year }}
+  </p>
+  {% endif %}
+<p>
+  </p>
+    {% if post.movie_hours %}
+    <p>
+      Kesto: {{ post.movie_hours }} tuntia {{ post.movie_minutes }} minuuttia
+    </p>
+    {% endif %}
+    </p>
+    <p>
+      Lisännyt: {{ post.username }}
+    </p>
+  </body>
+</html>

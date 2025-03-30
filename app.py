@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import redirect, render_template, request, session
+from flask import redirect, render_template, request, session, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import db
@@ -12,7 +12,10 @@ app.secret_key = config.secret_key()
 
 @app.route("/")
 def index():
-    posts = db.query("SELECT * FROM posts p, users u WHERE u.id = p.user_id ORDER BY p.id DESC")
+    posts = db.query("""SELECT p.id, p.user_id, p.title, p.release_year, p.movie_hours, p.movie_minutes, p.rating, p.edited_at, u.id, u.username
+                     FROM posts p, users u 
+                     WHERE u.id = p.user_id 
+                     ORDER BY p.id DESC""")
     return render_template("index.html", posts=posts)
     
 
@@ -112,3 +115,13 @@ def create_post():
         return "VIRHE" \
         "<br><a href=""/add_movie"">Yritä uudelleen</a>" \
         "<br><a href=""/"">Palaa etusivulle</a>"
+
+@app.route("/post/<int:post_id>")
+def show_post(post_id):
+    try:
+        post = db.query("""SELECT p.id, p.user_id, p.title, p.release_year, p.movie_hours, p.movie_minutes, p.rating, p.edited_at, u.id, u.username
+                        FROM posts p, users u 
+                        WHERE p.id = ? AND p.user_id = u.id""", [post_id])[0]
+        return render_template("post.html", post=post)
+    except:
+        abort(404)

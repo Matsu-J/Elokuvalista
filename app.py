@@ -1,8 +1,10 @@
 from flask import Flask
 from flask import redirect, render_template, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
 import db
 import config
+
 
 app = Flask(__name__)
 app.secret_key = config.secret_key()
@@ -68,6 +70,43 @@ def logout():
     del session["username"]
     return redirect("/")
 
+
 @app.route("/add_movie")
 def add_movie():
     return render_template("add_movie.html")
+
+
+@app.route("/create_post", methods=["POST"])
+def create_post():
+    title = request.form["title"]
+    
+    if request.form["release_year"]:
+        year = request.form["release_year"]
+    else:
+        year = None
+    
+    if request.form["hours"] and request.form["minutes"]:
+        hours = request.form["hours"]
+        minutes = request.form["minutes"]
+    elif request.form["hours"] and not request.form["minutes"]:
+        hours = request.form["hours"]
+        minutes = 0
+    elif not request.form["hours"] and request.form["minutes"]:
+        hours = 0
+        minutes = request.form["hours"]
+    else:
+        hours = None
+        minutes = None
+    
+    edited_at = datetime.now()
+    user_id = db.query("SELECT id FROM users WHERE username = ?", [session["username"]])[0][0]
+    print(user_id)
+
+    try:
+        db.execute("INSERT INTO posts (user_id, title, release_year, movie_hours, movie_minutes, edited_at) VALUES (?, ?, ?, ?, ?, ?)", [user_id, title, year, hours, minutes, edited_at])
+        return "Onnistui" \
+        "<br><a href=""/"">Palaa etusivulle</a>"
+    except:
+        return "VIRHE" \
+        "<br><a href=""/add_movie"">Yritä uudelleen</a>" \
+        "<br><a href=""/"">Palaa etusivulle</a>"

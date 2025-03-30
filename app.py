@@ -12,7 +12,8 @@ app.secret_key = config.secret_key()
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    posts = db.query("SELECT * FROM posts p, users u WHERE u.id = p.user_id ORDER BY p.id DESC")
+    return render_template("index.html", posts=posts)
     
 
 @app.route("/register")
@@ -38,6 +39,7 @@ def create_user():
         return "Käyttäjätunnus on jo olemassa" \
         "<br><a href=""/login"">Kirjaudu sisään?</a>"
     
+    session["username"] = username
     return redirect("/")
 
 
@@ -104,7 +106,7 @@ def create_post():
 
     try:
         db.execute("INSERT INTO posts (user_id, title, release_year, movie_hours, movie_minutes, edited_at) VALUES (?, ?, ?, ?, ?, ?)", [user_id, title, year, hours, minutes, edited_at])
-        return "Onnistui" \
+        return "Elokuva lisätty!" \
         "<br><a href=""/"">Palaa etusivulle</a>"
     except:
         return "VIRHE" \

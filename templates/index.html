@@ -9,6 +9,7 @@
 <body>
   <h1>Elokuvalista</h1>
 
+  <hr>
   {% if session.username %}
   <h2>
     Tervetuloa {{ session.username }}!
@@ -16,6 +17,7 @@
   <a href="/add_movie">Lisää elokuva listalle</a>
   <br><br>
   <a href="/logout">Kirjaudu ulos</a>
+  <br>
 
   {% else %}
   <p>Kirjaudu sisään niin näet omat elokuvasi</p>
@@ -25,8 +27,33 @@
   <br>
   <p>Etkö ole vielä käyttäjä?</p>
   <a href="/register">Rekisteröidy tästä</a>
+  <br>
   {% endif %}
-  
+  <br>
+  <hr>
+
+  <br>
+  {% for post in posts %}
+  <p>
+    {{ post.username }} - {{ post.title }}
+  </p>
+  {% if post.release_year %}
+  <p>
+    Julkaisuvuosi: {{ post.release_year }}
+  </p>
+  {% endif %}
+<p>
+  </p>
+    {% if post.movie_hours %}
+    <p>
+      Kesto: {{ post.movie_hours }} tuntia {{ post.movie_minutes }} minuuttia
+    </p>
+    {% endif %}
+  <p>
+    ({{ post.edited_at }})
+  </p>
+    <br>
+  {% endfor %}
 </body>
 
 </html>

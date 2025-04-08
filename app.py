@@ -2,6 +2,7 @@ from flask import Flask
 from flask import redirect, render_template, request, session, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+import database_handler
 import db
 import config
 
@@ -12,10 +13,7 @@ app.secret_key = config.secret_key()
 
 @app.route("/")
 def index():
-    posts = db.query("""SELECT p.id, p.user_id, p.title, p.release_year, p.movie_hours, p.movie_minutes, p.rating, p.edited_at, u.id, u.username
-                     FROM posts p, users u 
-                     WHERE u.id = p.user_id 
-                     ORDER BY p.id DESC""")
+    posts = database_handler.all_posts()
     return render_template("index.html", posts=posts)
     
 
@@ -105,10 +103,9 @@ def create_post():
     
     edited_at = datetime.now()
     user_id = db.query("SELECT id FROM users WHERE username = ?", [session["username"]])[0][0]
-    print(user_id)
 
     try:
-        db.execute("INSERT INTO posts (user_id, title, release_year, movie_hours, movie_minutes, edited_at) VALUES (?, ?, ?, ?, ?, ?)", [user_id, title, year, hours, minutes, edited_at])
+        database_handler.create_post([user_id, title, year, hours, minutes, edited_at])
         return "Elokuva lisätty!" \
         "<br><a href=""/"">Palaa etusivulle</a>"
     except:
@@ -119,9 +116,7 @@ def create_post():
 @app.route("/post/<int:post_id>")
 def show_post(post_id):
     try:
-        post = db.query("""SELECT p.id, p.user_id, p.title, p.release_year, p.movie_hours, p.movie_minutes, p.rating, p.edited_at, u.id, u.username
-                        FROM posts p, users u 
-                        WHERE p.id = ? AND p.user_id = u.id""", [post_id])[0]
+        post = database_handler.get_post(post_id)
         return render_template("post.html", post=post)
     except:
         abort(404)

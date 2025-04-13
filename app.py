@@ -185,15 +185,24 @@ def delete_post(post_id):
                 "<br><a href=""/"">Palaa etusivulle</a>"
             return redirect("/post/" + str(post_id))
 
+
 @app.route("/sorted", methods=["POST"])
 def sorted_by_year():
-    sort_by = request.form["sort"]
-    if sort_by == "1":
-        sorted_by = "Vanhin ensin"
-        posts = database_handler.oldest_first()
-    if sort_by == "2":
-        sorted_by = "Uusin ensin"
-        posts = database_handler.newest_first()
-    else:
-        pass
-    return render_template("sorted.html", posts=posts, sorted_by=sorted_by)
+    try:
+        sort_by = request.form["sort"]
+        if sort_by == "1":
+            sorted_by = "Vanhin ensin"
+            posts = database_handler.oldest_first()
+        if sort_by == "2":
+            sorted_by = "Uusin ensin"
+            posts = database_handler.newest_first()
+        if sort_by == "3":
+            sorted_by = "Pisin ensin"
+            posts = database_handler.longest_first()
+        if sort_by == "4":
+            sorted_by = "Lyhyin ensin"
+            posts = database_handler.shortest_first()
+        return render_template("sorted.html", posts=posts, sorted_by=sorted_by)
+    except:
+        return redirect("/")
+

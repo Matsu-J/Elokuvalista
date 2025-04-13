@@ -22,3 +22,6 @@ def create_post(parameters):
 
 def edit_post(parameters):
     db.execute("UPDATE posts SET title = ?, release_year = ?, movie_hours = ?, movie_minutes = ?, edited_at = ? WHERE id = ?", parameters)
+
+def delete_post(post_id):
+    db.execute("DELETE FROM posts WHERE id = ?", [post_id])

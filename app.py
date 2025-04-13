@@ -167,3 +167,20 @@ def edit_post(post_id):
                 return "VIRHE" \
                 "<br><a href=""/add_movie"">Yritä uudelleen</a>" \
                 "<br><a href=""/"">Palaa etusivulle</a>"
+
+
+@app.route("/delete_post/<int:post_id>", methods=["GET", "POST"])
+def delete_post(post_id):
+    post = database_handler.get_post(post_id)
+    if post["user_id"] != session["user_id"]:
+        abort(403)
+    
+    else:
+        if request.method == "GET":
+            return render_template("delete_post.html", post=post)
+        if request.method == "POST":
+            if "confirm" in request.form:
+                database_handler.delete_post(post_id)
+                return "Elokuva poistettu!" \
+                "<br><a href=""/"">Palaa etusivulle</a>"
+            return redirect("/post/" + str(post_id))

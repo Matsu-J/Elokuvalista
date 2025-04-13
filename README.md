@@ -8,7 +8,7 @@ Sovelluksen idea on olla lista, johon käyttäjät voivat lisätä elokuvia joit
   
   ✅ Käyttäjä voi lisätä elokuvan katsomislistalle
   
-  ❌ Käyttäjä voi muokata katsomislistaansa
+  ✅ Käyttäjä voi muokata katsomislistaansa
   
   ❌ Käyttäjä voi kommentoida muiden listoilla olevia elokuvia
   

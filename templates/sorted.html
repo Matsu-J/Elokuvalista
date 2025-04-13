@@ -21,7 +21,9 @@
 
   {% else %}
   <p>Kirjaudu sisään niin näet omat elokuvasi</p>
-  <a href="/login">Kirjaudu sisään</a>
+  <form action="/login">
+    <input type="submit" value="Kirjaudu sisään">
+  </from>
   <br>
   <p>Etkö ole vielä käyttäjä?</p>
   <a href="/register">Rekisteröidy tästä</a>
@@ -32,13 +34,8 @@
   <hr>
 
   <div>
-    <p>Lajittele syöte:</p>
-    <form action="/sorted" method="post">
-      <input type="radio" name="sort" value="1" /> Vanhin ensin
-      <input type="radio" name="sort" value="2" /> Uusin ensin
-      <br>
-      <input type="submit" value="Lajittele">
-    </form>
+    <p>Lajiteltu: {{ sorted_by }}</p>
+    <a href="/">Palaa etusivulle</a>
   </div>
 
 <hr> 

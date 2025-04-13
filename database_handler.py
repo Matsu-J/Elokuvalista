@@ -6,6 +6,20 @@ def all_posts():
                      WHERE u.id = p.user_id 
                      ORDER BY p.id DESC""")
 
+def newest_first():
+    return db.query("""SELECT p.id, p.user_id, p.title, p.release_year, p.movie_hours, p.movie_minutes, p.rating, p.edited_at, u.id, u.username
+                     FROM posts p, users u 
+                     WHERE u.id = p.user_id
+                     AND p.release_year NOT NULL
+                     ORDER BY p.release_year DESC""")
+
+def oldest_first():
+    return db.query("""SELECT p.id, p.user_id, p.title, p.release_year, p.movie_hours, p.movie_minutes, p.rating, p.edited_at, u.id, u.username
+                     FROM posts p, users u 
+                     WHERE u.id = p.user_id
+                     AND p.release_year NOT NULL
+                     ORDER BY p.release_year""")
+
 def get_post(post_id):
     return db.query("""SELECT p.id, p.user_id, p.title, p.release_year, p.movie_hours, p.movie_minutes, p.rating, p.edited_at, u.id, u.username
                         FROM posts p, users u 

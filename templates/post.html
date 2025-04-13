@@ -3,29 +3,35 @@
   <head>
     <title>Elokuavlista</title>
   </head>
+
   <body>
     <h1>Elokuvalista</h1>
+    <hr>
+
     <a href="/">Palaa etusivulle</a>
     <br>
-    <h2>
-      {{ post.title }}
-    </h2>
-    <p>
-      {% if post.release_year %}
-  <p>
-    Julkaisuvuosi: {{ post.release_year }}
-  </p>
-  {% endif %}
-<p>
-  </p>
-    {% if post.movie_hours %}
-    <p>
-      Kesto: {{ post.movie_hours }} tuntia {{ post.movie_minutes }} minuuttia
-    </p>
+
+    <h2>{{ post.title }}</h2>
+
+    {% if post.release_year %}
+    <p>Julkaisuvuosi: {{ post.release_year }}</p>
     {% endif %}
-    </p>
-    <p>
-      Lisännyt: {{ post.username }}
-    </p>
+
+    {% if post.movie_hours %}
+    <p>Kesto: {{ post.movie_hours }} tuntia {{ post.movie_minutes }} minuuttia</p>
+    {% endif %}
+
+    {% if post.rating %}
+    <p>Arvosana: {{ post.rating }}</p>
+    {% endif %}
+    
+    <p>Lisännyt: {{ post.username }}</p>
+
+    {% if session.user_id == post.user_id%}
+    <a href="/edit_post/{{ post.id }}">Muokkaa</a>
+    <br><br>
+    <a href="/delete_post/{{ post.id }}">Poista</a>
+    {% endif %}
+
   </body>
 </html>

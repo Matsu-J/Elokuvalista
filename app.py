@@ -41,6 +41,7 @@ def create_user():
         "<br><a href=""/login"">Kirjaudu sisään?</a>"
     
     session["username"] = username
+    session["user_id"] = database_handler.get_user_id(username)
     return redirect("/")
 
 
@@ -62,6 +63,7 @@ def check_login():
     
     if check_password_hash(hashed_password, password):
         session["username"] = username
+        session["user_id"] = database_handler.get_user_id(username)
         return redirect("/")
     else:
         return "Väärä tunnus tai salasana" \
@@ -71,6 +73,7 @@ def check_login():
 @app.route("/logout")
 def logout():
     del session["username"]
+    del session["user_id"]
     return redirect("/")
 
 
@@ -113,6 +116,7 @@ def create_post():
         "<br><a href=""/add_movie"">Yritä uudelleen</a>" \
         "<br><a href=""/"">Palaa etusivulle</a>"
 
+
 @app.route("/post/<int:post_id>")
 def show_post(post_id):
     try:
@@ -120,3 +124,46 @@ def show_post(post_id):
         return render_template("post.html", post=post)
     except:
         abort(404)
+
+
+@app.route("/edit_post/<int:post_id>", methods=["GET", "POST"])
+def edit_post(post_id):
+    post = database_handler.get_post(post_id)
+    if post["user_id"] != session["user_id"]:
+        abort(403)
+
+    else:
+        if request.method == "GET":
+            return render_template("edit_post.html", post=post)
+        
+        if request.method == "POST":
+            title = request.form["title"]
+
+            if request.form["release_year"]:
+                year = request.form["release_year"]
+            else:
+                year = None
+            
+            if request.form["hours"] and request.form["minutes"]:
+                hours = request.form["hours"]
+                minutes = request.form["minutes"]
+            elif request.form["hours"] and not request.form["minutes"]:
+                hours = request.form["hours"]
+                minutes = 0
+            elif not request.form["hours"] and request.form["minutes"]:
+                hours = 0
+                minutes = request.form["hours"]
+            else:
+                hours = None
+                minutes = None
+            
+            edited_at = datetime.now()
+
+            try:
+                database_handler.edit_post([title, year, hours, minutes, edited_at, post_id])
+                return "Muokkaukset tallennettu!" \
+                "<br><a href=""/"">Palaa etusivulle</a>"
+            except:
+                return "VIRHE" \
+                "<br><a href=""/add_movie"">Yritä uudelleen</a>" \
+                "<br><a href=""/"">Palaa etusivulle</a>"

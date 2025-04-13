@@ -30,7 +30,21 @@
   <br>
   {% endif %}
   <br>
+
   <hr>
+
+  <div>
+    <p>Hae elokuvaa</p>
+    <form>
+      <input type="text">
+      <button type="submit">Hae</button>
+    </form>
+    <p>Lajittele syöte:</p>
+    <a href="/sort_by_year">Vuoden mukaan</a> <a href="sort_by_length">Pituuden mukaan</a> <a href="sort_by_grade">Arvosanan mukaan</a>
+  </div>
+
+<hr> 
+  
 
   <br>
   {% for post in posts %}

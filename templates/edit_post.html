@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Elokuvalista - Muokkaa</title>
+  </head>
+
+  <body>
+    <h1>Elokuvalista</h1>
+    <hr>
+    <h2>Muokkaa elokuvaa</h2>
+    
+    <form action="/edit_post/{{ post.id }}" method="post">
+      <p>Elokuvan nimi:</p>
+      <input type="text" value="{{ post.title }}" name="title" required>
+
+      <p>Julkaisuvuosi</p>
+      <input type="text" value="{{ post.release_year }}" name="release_year">
+
+      <p>Elokuvan pituus</p>
+      <input type="text" value="{{ post.hours }}" name="hours" placeholder="tuntia"><br>
+      <input type="text" value="{{ post.minutes }}" name="minutes" placeholder="minuuttia">
+
+      <br><br>
+      <input type="submit" value="Tallenna"></input>
+  </body>
+</html>

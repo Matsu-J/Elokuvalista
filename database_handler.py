@@ -11,5 +11,14 @@ def get_post(post_id):
                         FROM posts p, users u 
                         WHERE p.id = ? AND p.user_id = u.id""", [post_id])[0]
 
+def get_user_id(username):
+    return db.query("""SELECT id
+                    FROM users
+                    WHERE username = ?
+                    """, [username])[0][0]
+
 def create_post(parameters):
     db.execute("INSERT INTO posts (user_id, title, release_year, movie_hours, movie_minutes, edited_at) VALUES (?, ?, ?, ?, ?, ?)", parameters)
+
+def edit_post(parameters):
+    db.execute("UPDATE posts SET title = ?, release_year = ?, movie_hours = ?, movie_minutes = ?, edited_at = ? WHERE id = ?", parameters)

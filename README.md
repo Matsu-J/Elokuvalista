@@ -12,7 +12,7 @@ Sovelluksen idea on olla lista, johon käyttäjät voivat lisätä elokuvia joit
 
   ✅ Käyttäjä voi lajitella elokuvat julkaisuvuoden mukaan
 
-  ❌ Käyttäjä voi lajitella elokuvat pituuden mukaan
+  ✅ Käyttäjä voi lajitella elokuvat pituuden mukaan
 
   ❌ Käyttäjä voi merkitä elokuvan katsotuksi
   

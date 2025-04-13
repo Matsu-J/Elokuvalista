@@ -30,7 +30,7 @@ Sovelluksen idea on olla lista, johon käyttäjät voivat lisätä elokuvia joit
 
 ## Asennusohjeet:
 
-Vaatiumukset:
+Vaatimukset:
 Python
 
 Lataa koodi esimerkiksi git clone komennolla

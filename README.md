@@ -9,20 +9,24 @@ Sovelluksen idea on olla lista, johon käyttäjät voivat lisätä elokuvia joit
   ✅ Käyttäjä voi lisätä elokuvan katsomislistalle
   
   ✅ Käyttäjä voi muokata katsomislistaansa
+
+  ✅ Käyttäjä voi lajitella elokuvat julkaisuvuoden mukaan
+
+  ❌ Käyttäjä voi lajitella elokuvat pituuden mukaan
+
+  ❌ Käyttäjä voi merkitä elokuvan katsotuksi
+  
+  ❌ Käyttäjä voi lajitella elokuvat katsottuihin ja ei katsottuihin
+  
+  ❌ Käyttäjä voi lajitella elokuvat arvosanan mukaan
+  
+  ❌ Käyttäjä voi arvostella elokuvia
   
   ❌ Käyttäjä voi kommentoida muiden listoilla olevia elokuvia
   
   ❌ Käyttäjä voi hakea elokuvia listaltaan
   
-  ❌ Käyttäjä voi merkitä elokuvan katsotuksi
-  
-  ❌ Käyttäjä voi lajitella elokuvat katsottuihin ja ei katsottuihin
-  
-  ❌ Käyttäjä voi lajitella elokuvat pituuden mukaan
-  
-  ❌ Käyttäjä voi lajitella elokuvat arvosanan mukaan
-  
-  ❌ Käyttäjä voi arvostella elokuvia
+
 
 ## Asennusohjeet:
 

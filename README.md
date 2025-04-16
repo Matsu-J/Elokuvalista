@@ -24,7 +24,7 @@ Sovelluksen idea on olla lista, johon käyttäjät voivat lisätä elokuvia joit
   
   ❌ Käyttäjä voi kommentoida muiden listoilla olevia elokuvia
   
-  ❌ Käyttäjä voi hakea elokuvia listaltaan
+  ✅ Käyttäjä voi hakea elokuvia
   
 
 

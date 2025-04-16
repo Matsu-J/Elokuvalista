@@ -2,7 +2,7 @@ from flask import Flask
 from flask import redirect, render_template, request, session, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-import feed, users, db, greet
+import feed, users, db, greet, stats
 import config
 
 
@@ -14,6 +14,7 @@ app.secret_key = config.secret_key()
 def index():
     posts = feed.all_posts()
     greeting = greet.random_greeting()
+    stats.action("frontpage")
     return render_template("index.html", posts=posts, greeting=greeting)
     
 
@@ -42,6 +43,7 @@ def create_user():
     
     session["username"] = username
     session["user_id"] = users.get_user_id(username)
+    stats.action("create user")
     return redirect("/")
 
 
@@ -64,6 +66,7 @@ def check_login():
     if check_password_hash(hashed_password, password):
         session["username"] = username
         session["user_id"] = users.get_user_id(username)
+        stats.action("login")
         return redirect("/")
     else:
         return "Väärä tunnus tai salasana" \
@@ -116,6 +119,7 @@ def create_post():
 
     try:
         feed.create_post([user_id, title, year, hours, minutes, edited_at])
+        stats.action("post created")
         return "Elokuva lisätty!" \
         "<br><a href=""/"">Palaa etusivulle</a>"
     except:

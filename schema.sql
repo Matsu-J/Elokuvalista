@@ -20,3 +20,11 @@ CREATE TABLE posts (
     rating TEXT DEFAULT NULL,
     edited_at TEXT
 );
+
+CREATE TABLE comments (
+    id INTEGER PRIMARY KEY,
+    post_id INTEGER REFERENCES posts,
+    user_id INTEGER REFERENCES users,
+    content TEXT,
+    edited_at TEXT
+);

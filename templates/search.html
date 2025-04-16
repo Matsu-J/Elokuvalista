@@ -12,7 +12,7 @@
   <hr>
   {% if session.username %}
   <h2>
-    Tervetuloa {{ session.username }}!
+    {{ greeting }}
   </h2>
   <a href="/add_movie">
     <button>Lisää elokuva listalle</button>
@@ -44,7 +44,7 @@
       <input type="text" name="query">
       <input type="submit" value="Hae">
     </form>
-    
+    <br>
     <a href="/">Palaa etusivulle</a>
     </form>
   </div>

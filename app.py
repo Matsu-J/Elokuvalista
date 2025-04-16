@@ -2,7 +2,7 @@ from flask import Flask
 from flask import redirect, render_template, request, session, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-import feed, users, db
+import feed, users, db, greet
 import config
 
 
@@ -13,7 +13,8 @@ app.secret_key = config.secret_key()
 @app.route("/")
 def index():
     posts = feed.all_posts()
-    return render_template("index.html", posts=posts)
+    greeting = greet.random_greeting()
+    return render_template("index.html", posts=posts, greeting=greeting)
     
 
 @app.route("/register")
@@ -199,6 +200,7 @@ def delete_post(post_id):
 
 @app.route("/sorted", methods=["POST"])
 def sorted_by_year():
+    greeting = greet.random_greeting()
     try:
         sort_by = request.form["sort"]
         if sort_by == "1":
@@ -213,7 +215,7 @@ def sorted_by_year():
         if sort_by == "4":
             sorted_by = "Lyhyin ensin"
             posts = feed.shortest_first()
-        return render_template("sorted.html", posts=posts, sorted_by=sorted_by)
+        return render_template("sorted.html", posts=posts, sorted_by=sorted_by, greeting=greeting)
     except:
         return redirect("/")
 
@@ -222,4 +224,5 @@ def sorted_by_year():
 def search():
     query = request.args.get("query")
     results = feed.search(query)
-    return render_template("/search.html", posts=results, query=query)
+    greeting = greet.random_greeting()
+    return render_template("/search.html", posts=results, query=query, greeting=greeting)

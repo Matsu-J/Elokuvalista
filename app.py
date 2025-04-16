@@ -2,8 +2,7 @@ from flask import Flask
 from flask import redirect, render_template, request, session, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-import database_handler
-import db
+import feed, users, db
 import config
 
 
@@ -13,7 +12,7 @@ app.secret_key = config.secret_key()
 
 @app.route("/")
 def index():
-    posts = database_handler.all_posts()
+    posts = feed.all_posts()
     return render_template("index.html", posts=posts)
     
 
@@ -35,13 +34,13 @@ def create_user():
     hashed_password = generate_password_hash(password)
 
     try:
-        db.execute("INSERT INTO users (username, password_hash) VALUES (?, ?)", [username, hashed_password])
+        users.create_user(username, hashed_password)
     except:
         return "Käyttäjätunnus on jo olemassa" \
         "<br><a href=""/login"">Kirjaudu sisään?</a>"
     
     session["username"] = username
-    session["user_id"] = database_handler.get_user_id(username)
+    session["user_id"] = users.get_user_id(username)
     return redirect("/")
 
 
@@ -56,14 +55,14 @@ def check_login():
     password = request.form["password"]
 
     try:
-        hashed_password = db.query("SELECT password_hash FROM users WHERE username = ?", [username])[0][0]
+        hashed_password = users.get_password_hash(username)
     except:
         return "Käyttäjätunnusta ei löydy" \
         "<br><a href=""/register"">Rekisteröi uusi käyttäjä</a>"
     
     if check_password_hash(hashed_password, password):
         session["username"] = username
-        session["user_id"] = database_handler.get_user_id(username)
+        session["user_id"] = users.get_user_id(username)
         return redirect("/")
     else:
         return "Väärä tunnus tai salasana" \
@@ -105,10 +104,10 @@ def create_post():
         minutes = None
     
     edited_at = datetime.now()
-    user_id = db.query("SELECT id FROM users WHERE username = ?", [session["username"]])[0][0]
+    user_id = users.get_user_id(session["username"])
 
     try:
-        database_handler.create_post([user_id, title, year, hours, minutes, edited_at])
+        feed.create_post([user_id, title, year, hours, minutes, edited_at])
         return "Elokuva lisätty!" \
         "<br><a href=""/"">Palaa etusivulle</a>"
     except:
@@ -120,7 +119,7 @@ def create_post():
 @app.route("/post/<int:post_id>")
 def show_post(post_id):
     try:
-        post = database_handler.get_post(post_id)
+        post = feed.get_post(post_id)
         return render_template("post.html", post=post)
     except:
         abort(404)
@@ -128,7 +127,7 @@ def show_post(post_id):
 
 @app.route("/edit_post/<int:post_id>", methods=["GET", "POST"])
 def edit_post(post_id):
-    post = database_handler.get_post(post_id)
+    post = feed.get_post(post_id)
     if post["user_id"] != session["user_id"]:
         abort(403)
 
@@ -160,7 +159,7 @@ def edit_post(post_id):
             edited_at = datetime.now()
 
             try:
-                database_handler.edit_post([title, year, hours, minutes, edited_at, post_id])
+                feed.edit_post([title, year, hours, minutes, edited_at, post_id])
                 return "Muokkaukset tallennettu!" \
                 "<br><a href=""/"">Palaa etusivulle</a>"
             except:
@@ -171,7 +170,7 @@ def edit_post(post_id):
 
 @app.route("/delete_post/<int:post_id>", methods=["GET", "POST"])
 def delete_post(post_id):
-    post = database_handler.get_post(post_id)
+    post = feed.get_post(post_id)
     if post["user_id"] != session["user_id"]:
         abort(403)
     
@@ -180,7 +179,7 @@ def delete_post(post_id):
             return render_template("delete_post.html", post=post)
         if request.method == "POST":
             if "confirm" in request.form:
-                database_handler.delete_post(post_id)
+                feed.delete_post(post_id)
                 return "Elokuva poistettu!" \
                 "<br><a href=""/"">Palaa etusivulle</a>"
             return redirect("/post/" + str(post_id))
@@ -192,16 +191,16 @@ def sorted_by_year():
         sort_by = request.form["sort"]
         if sort_by == "1":
             sorted_by = "Vanhin ensin"
-            posts = database_handler.oldest_first()
+            posts = feed.oldest_first()
         if sort_by == "2":
             sorted_by = "Uusin ensin"
-            posts = database_handler.newest_first()
+            posts = feed.newest_first()
         if sort_by == "3":
             sorted_by = "Pisin ensin"
-            posts = database_handler.longest_first()
+            posts = feed.longest_first()
         if sort_by == "4":
             sorted_by = "Lyhyin ensin"
-            posts = database_handler.shortest_first()
+            posts = feed.shortest_first()
         return render_template("sorted.html", posts=posts, sorted_by=sorted_by)
     except:
         return redirect("/")

@@ -38,8 +38,15 @@
   <hr>
 
   <div>
-    <p>Lajiteltu: {{ sorted_by }}</p>
+    <h3>Tulokset haulle {{ query }}</h3>
+    <form action="/search" method="get">
+      <p>Hae elokuvia</p>
+      <input type="text" name="query">
+      <input type="submit" value="Hae">
+    </form>
+    
     <a href="/">Palaa etusivulle</a>
+    </form>
   </div>
 
 <hr> 

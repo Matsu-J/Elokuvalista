@@ -67,7 +67,12 @@ def check_login():
     else:
         return "Väärä tunnus tai salasana" \
         "<br><a href=""/login"">Yritä uudelleen</a>"
-        
+
+
+def require_login():
+    if "user_id" not in session:
+        abort(403)
+
 
 @app.route("/logout")
 def logout():
@@ -78,11 +83,13 @@ def logout():
 
 @app.route("/add_movie")
 def add_movie():
+    require_login()
     return render_template("add_movie.html")
 
 
 @app.route("/create_post", methods=["POST"])
 def create_post():
+    require_login()
     title = request.form["title"]
     
     if request.form["release_year"]:
@@ -127,6 +134,7 @@ def show_post(post_id):
 
 @app.route("/edit_post/<int:post_id>", methods=["GET", "POST"])
 def edit_post(post_id):
+    require_login()
     post = feed.get_post(post_id)
     if post["user_id"] != session["user_id"]:
         abort(403)
@@ -170,7 +178,11 @@ def edit_post(post_id):
 
 @app.route("/delete_post/<int:post_id>", methods=["GET", "POST"])
 def delete_post(post_id):
-    post = feed.get_post(post_id)
+    require_login()
+    try:
+        post = feed.get_post(post_id)
+    except:
+        abort(404)
     if post["user_id"] != session["user_id"]:
         abort(403)
     
@@ -205,3 +217,9 @@ def sorted_by_year():
     except:
         return redirect("/")
 
+
+@app.route("/search", methods=["GET"])
+def search():
+    query = request.args.get("query")
+    results = feed.search(query)
+    return render_template("/search.html", posts=results, query=query)

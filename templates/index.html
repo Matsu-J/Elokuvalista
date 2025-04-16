@@ -14,17 +14,23 @@
   <h2>
     Tervetuloa {{ session.username }}!
   </h2>
-  <a href="/add_movie">Lisää elokuva listalle</a>
-  <br><br>
-  <a href="/logout">Kirjaudu ulos</a>
+  <a href="/add_movie">
+    <button>Lisää elokuva listalle</button>
+  </a>
+  <a href="/logout">
+    <button>Kirjaudu ulos</button>
+  </a>
   <br>
 
   {% else %}
   <p>Kirjaudu sisään niin näet omat elokuvasi</p>
-  <a href="/login">Kirjaudu sisään</a>
-  <br>
+  <a href="/login">
+    <button>Kirjaudu sisään</button>
+  </a>
   <p>Etkö ole vielä käyttäjä?</p>
-  <a href="/register">Rekisteröidy tästä</a>
+  <a href="/register">
+    <button>Rekisteröidy tästä</button>
+  </a>
   <br>
   {% endif %}
   <br>
@@ -32,8 +38,14 @@
   <hr>
 
   <div>
-    <p>Lajittele syöte:</p>
+    <form action="/search" method="get">
+      <p>Hae elokuvia</p>
+      <input type="text" name="query">
+      <input type="submit" value="Hae">
+    </form>
+    
     <form action="/sorted" method="post">
+      <p>Lajittele syöte:</p>
       <input type="radio" name="sort" value="1" /> Vanhin ensin
       <input type="radio" name="sort" value="2" /> Uusin ensin
       <input type="radio" name="sort" value="3" /> Pisin ensin

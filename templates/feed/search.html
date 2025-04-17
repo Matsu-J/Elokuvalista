@@ -14,12 +14,15 @@
   <h2>
     {{ greeting }}
   </h2>
-  <a href="/add_movie">
-    <button>Lisää elokuva listalle</button>
-  </a>
-  <a href="/logout">
-    <button>Kirjaudu ulos</button>
-  </a>
+    <a href="/add_movie">
+      <button>Lisää elokuva listalle</button>
+    </a>
+    <a href="/user/{{ session.user_id }}">
+      <button>Oma profiili</button>
+    </a>
+    <a href="/logout">
+      <button>Kirjaudu ulos</button>
+    </a>
   <br>
 
   {% else %}
@@ -38,20 +41,14 @@
   <hr>
 
   <div>
+    <h3>Tulokset haulle {{ query }}</h3>
     <form action="/search" method="get">
       <p>Hae elokuvia</p>
       <input type="text" name="query">
       <input type="submit" value="Hae">
     </form>
-    
-    <form action="/sorted" method="post">
-      <p>Lajittele syöte:</p>
-      <input type="radio" name="sort" value="1" /> Vanhin ensin
-      <input type="radio" name="sort" value="2" /> Uusin ensin
-      <input type="radio" name="sort" value="3" /> Pisin ensin
-      <input type="radio" name="sort" value="4" /> Lyhyin ensin
-      <br><br>
-      <input type="submit" value="Lajittele">
+    <br>
+    <a href="/">Palaa etusivulle</a>
     </form>
   </div>
 
@@ -60,10 +57,8 @@
 
   <br>
   {% for post in posts %}
-  <a href="/user/{{ post.user_id }}">{{ post.username }}</a>
-  <a> - </a>
-  <a href="/post/{{ post.id }}">
-    {{ post.title }}
+  <a href="/post/{{post.id}}">
+    {{ post.username }} - {{ post.title }}
   </a>
   {% if post.release_year %}
   <p>

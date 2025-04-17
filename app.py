@@ -14,12 +14,12 @@ def index():
     posts = feed.all_posts()
     greeting = greet.random_greeting()
     stats.action("frontpage")
-    return render_template("index.html", posts=posts, greeting=greeting)
+    return render_template("feed/index.html", posts=posts, greeting=greeting)
     
 
 @app.route("/register")
 def register():
-    return render_template("register.html")
+    return render_template("from/register.html")
 
 
 @app.route("/create_user", methods=["POST"])
@@ -48,7 +48,7 @@ def create_user():
 
 @app.route("/login")
 def login():
-    return render_template("login.html")
+    return render_template("form/login.html")
 
 
 @app.route("/check_login", methods=["POST"])
@@ -102,16 +102,26 @@ def user_page(user_id):
 @app.route("/add_movie")
 def add_movie():
     require_login()
-    return render_template("add_movie.html")
+    return render_template("form/add_movie.html")
 
 
 @app.route("/create_post", methods=["POST"])
 def create_post():
     require_login()
     title = request.form["title"]
-    
+    if len(title) > 30:
+        return "VIRHE: Tarkista nimen pituus"\
+            "<br><a href=""/add_movie"">Yritä uudelleen</a>" \
+            "<br><a href=""/"">Palaa etusivulle</a>"
+
     if request.form["release_year"]:
         year = request.form["release_year"]
+        try:
+            year = int(year)
+        except:
+            return "VIRHE: Tarkista vuosi"\
+            "<br><a href=""/add_movie"">Yritä uudelleen</a>" \
+            "<br><a href=""/"">Palaa etusivulle</a>"
     else:
         year = None
     
@@ -127,6 +137,24 @@ def create_post():
     else:
         hours = None
         minutes = None
+    
+    if hours != None:
+        try:
+            hours = int(hours)
+        except:
+            return "VIRHE: Tarkista tunnit"\
+            "<br><a href=""/add_movie"">Yritä uudelleen</a>" \
+            "<br><a href=""/"">Palaa etusivulle</a>"
+    
+    if minutes != None:
+        try:
+            minutes = int(minutes)
+            if minutes < 0 or minutes > 60:
+                raise ValueError
+        except:
+            return "VIRHE: tarkista minuutit"\
+            "<br><a href=""/add_movie"">Yritä uudelleen</a>" \
+            "<br><a href=""/"">Palaa etusivulle</a>"
     
     edited_at = datetime.now()
     user_id = users.get_user_id(session["username"])
@@ -160,13 +188,23 @@ def edit_post(post_id):
 
     else:
         if request.method == "GET":
-            return render_template("edit_post.html", post=post)
+            return render_template("form/edit_post.html", post=post)
         
         if request.method == "POST":
             title = request.form["title"]
+            if len(title) > 30:
+                return "VIRHE: Tarkista nimen pituus"\
+                    "<br><a href="f"/edit_post/{post_id}"">Yritä uudelleen</a>" \
+                    "<br><a href=""/"">Palaa etusivulle</a>"
 
             if request.form["release_year"]:
                 year = request.form["release_year"]
+                try:
+                    year = int(year)
+                except:
+                    return "VIRHE: Tarkista vuosi"\
+                    "<br><a href="f"/edit_post/{post_id}"">Yritä uudelleen</a>" \
+                    "<br><a href=""/"">Palaa etusivulle</a>"
             else:
                 year = None
             
@@ -182,6 +220,24 @@ def edit_post(post_id):
             else:
                 hours = None
                 minutes = None
+
+            if hours != None:
+                try:
+                    hours = int(hours)
+                except:
+                    return "VIRHE: Tarkista tunnit"\
+                    "<br><a href="f"/edit_post/{post_id}"">Yritä uudelleen</a>" \
+                    "<br><a href=""/"">Palaa etusivulle</a>"
+            
+            if minutes != None:
+                try:
+                    minutes = int(minutes)
+                    if minutes < 0 or minutes > 60:
+                        raise ValueError
+                except:
+                    return "VIRHE: tarkista minuutit"\
+                    "<br><a href="f"/edit_post/{post_id}"">Yritä uudelleen</a>" \
+                    "<br><a href=""/"">Palaa etusivulle</a>"
             
             edited_at = datetime.now()
 
@@ -207,7 +263,7 @@ def delete_post(post_id):
     
     else:
         if request.method == "GET":
-            return render_template("delete_post.html", post=post)
+            return render_template("form/delete_post.html", post=post)
         if request.method == "POST":
             if "confirm" in request.form:
                 feed.delete_post(post_id)
@@ -233,7 +289,7 @@ def sorted_by_year():
         if sort_by == "4":
             sorted_by = "Lyhyin ensin"
             posts = feed.shortest_first()
-        return render_template("sorted.html", posts=posts, sorted_by=sorted_by, greeting=greeting)
+        return render_template("feed/sorted.html", posts=posts, sorted_by=sorted_by, greeting=greeting)
     except:
         return redirect("/")
 
@@ -243,4 +299,4 @@ def search():
     query = request.args.get("query")
     results = feed.search(query)
     greeting = greet.random_greeting()
-    return render_template("/search.html", posts=results, query=query, greeting=greeting)
+    return render_template("feed/search.html", posts=results, query=query, greeting=greeting)

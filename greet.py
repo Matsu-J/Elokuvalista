@@ -2,9 +2,10 @@ from random import randint
 from flask import session
 
 def random_greeting():
-    if session["username"]:
-        user = session["username"]
-    else:
+    try:
+        if session["username"]:
+            user = session["username"]
+    except:
         user = ""
 
     messages = [

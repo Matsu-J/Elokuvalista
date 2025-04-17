@@ -2,8 +2,7 @@ from flask import Flask
 from flask import redirect, render_template, request, session, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-import feed, users, db, greet, stats
-import config
+import feed, users, greet, stats, config
 
 
 app = Flask(__name__)
@@ -83,6 +82,21 @@ def logout():
     del session["username"]
     del session["user_id"]
     return redirect("/")
+
+
+@app.route("/user/<int:user_id>")
+def user_page(user_id):
+    try:
+        user = (users.get_user(user_id))
+    except:
+        abort(404)
+    count_all = users.count_all(user_id)
+    posts = users.get_posts(user_id)
+    return render_template("user.html", 
+                           username=user, 
+                           user_id=user_id,
+                           count_all=count_all,
+                           posts=posts)
 
 
 @app.route("/add_movie")

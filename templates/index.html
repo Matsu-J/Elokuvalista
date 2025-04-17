@@ -60,8 +60,10 @@
 
   <br>
   {% for post in posts %}
-  <a href="/post/{{post.id}}">
-    {{ post.username }} - {{ post.title }}
+  <a href="/user/{{ post.user_id }}">{{ post.username }}</a>
+  <a> - </a>
+  <a href="/post/{{ post.id }}">
+    {{ post.title }}
   </a>
   {% if post.release_year %}
   <p>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Elokuvalista - {{ username }}</title>
+  </head>
+  <body>
+    <h1>Elokuvalista</h1>
+    <hr>
+    <h2>{{ username }}</h2>
+
+    {% if session.user_id == user_id %}
+    <p>Olet lisännyt listallesi {{ count_all }} elokuvaa</p>
+    {% endif %}
+
+    {% if session.user_id != user_id %}
+    <p>Käyttäjä on lisännyt listalleen {{ count_all }} elokuvaa</p>
+    {% endif %}
+
+    <a href="/">Palaa etusivulle</a>
+    <hr><br>
+
+    {% for post in posts %}
+    <a href="/post/{{ post.id }}">
+        {{ post.title }}
+    </a>
+    {% if post.release_year %}
+    <p>
+        Julkaisuvuosi: {{ post.release_year }}
+    </p>
+    {% endif %}
+    <p>
+    </p>
+        {% if post.movie_hours %}
+        <p>
+        Kesto: {{ post.movie_hours }} tuntia {{ post.movie_minutes }} minuuttia
+        </p>
+        {% endif %}
+    <p>
+        ({{ post.edited_at }})
+    </p>
+        <br>
+    {% endfor %}
+  </body>
+</html>

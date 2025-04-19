@@ -20,7 +20,7 @@ Sovelluksen idea on olla lista, johon käyttäjät voivat lisätä elokuvia joit
   
   ❌ Käyttäjä voi lajitella elokuvat arvosanan mukaan
   
-  ❌ Käyttäjä voi arvostella elokuvia
+  ✅ Käyttäjä voi arvostella elokuvia
   
   ❌ Käyttäjä voi kommentoida muiden listoilla olevia elokuvia
   

@@ -24,18 +24,17 @@
         {{ post.title }}
     </a>
     {% if post.release_year %}
-    <p>
-        Julkaisuvuosi: {{ post.release_year }}
-    </p>
+    <p>Julkaisuvuosi: {{ post.release_year }}</p>
     {% endif %}
     <p>
     </p>
-        {% if post.movie_hours %}
-        <p>
-        Kesto: {{ post.movie_hours }} tuntia {{ post.movie_minutes }} minuuttia
-        </p>
-        {% endif %}
+      {% if post.movie_hours %}
+      <p>Kesto: {{ post.movie_hours }} tuntia {{ post.movie_minutes }} minuuttia</p>
+      {% endif %}
     <p>
+      {% if post.rating %}
+      <p>Käyttäjän arvio: {{ post.rating }} / 10</p>
+      {% endif %}
         ({{ post.edited_at }})
     </p>
         <br>

@@ -171,11 +171,24 @@ def create_post():
             "<br><a href=""/add_movie"">Yritä uudelleen</a>" \
             "<br><a href=""/"">Palaa etusivulle</a>"
     
+    if request.form["grade"]:
+        try:
+            grade = request.form["grade"]
+            if "," in grade:
+                grade = grade.replace(",",".")
+            grade = float(grade)
+            if 1 > grade or grade > 10:
+                raise ValueError
+        except:
+            return "VIRHE: Anna arvosana asteikolla 1-10"\
+            "<br><a href=""/add_movie"">Yritä uudelleen</a>" \
+            "<br><a href=""/"">Palaa etusivulle</a>"
+    
     edited_at = datetime.now()
     user_id = users.get_user_id(session["username"])
 
     try:
-        feed.create_post([user_id, title, year, hours, minutes, edited_at])
+        feed.create_post([user_id, title, year, hours, minutes, grade, edited_at])
         stats.action("post created")
         return "Elokuva lisätty!" \
         "<br><a href=""/"">Palaa etusivulle</a>"
@@ -257,11 +270,24 @@ def edit_post(post_id):
                     return "VIRHE: tarkista minuutit"\
                     "<br><a href="f"/edit_post/{post_id}"">Yritä uudelleen</a>" \
                     "<br><a href=""/"">Palaa etusivulle</a>"
-            
+                
+            if request.form["grade"]:
+                try:
+                    grade = request.form["grade"]
+                    if "," in grade:
+                        grade = grade.replace(",",".")
+                    grade = float(grade)
+                    if 1 > grade or grade > 10:
+                        raise ValueError
+                except:
+                    return "VIRHE: Anna arvosana asteikolla 1-10"\
+                    "<br><a href="f"/edit_post/{post_id}"">Yritä uudelleen</a>" \
+                    "<br><a href=""/"">Palaa etusivulle</a>"
+    
             edited_at = datetime.now()
 
             try:
-                feed.edit_post([title, year, hours, minutes, edited_at, post_id])
+                feed.edit_post([title, year, hours, minutes, grade, edited_at, post_id])
                 return "Muokkaukset tallennettu!" \
                 "<br><a href=""/"">Palaa etusivulle</a>"
             except:

@@ -14,7 +14,7 @@ CREATE TABLE posts (
     id INTEGER PRIMARY KEY,
     user_id INTEGER REFERENCES users,
     title TEXT,
-    release_year TEXT DEFAULT NULL,
+    release_year INTEGER DEFAULT NULL,
     movie_hours TEXT DEFAULT NULL,
     movie_minutes TEXT DEFAULT NULL,
     rating TEXT DEFAULT NULL,

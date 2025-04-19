@@ -14,11 +14,23 @@
       <input type="text" value="{{ post.title }}" name="title" maxlength="30" required>
 
       <p>Julkaisuvuosi</p>
+      {% if post.release_year != None %}
       <input type="text" value="{{ post.release_year }}" maxlength="4" name="release_year">
+      {% else %}
+      <input type="text" maxlength="4" name="release_year">
+      {% endif %}
 
       <p>Elokuvan pituus</p>
+      {% if post.movie_hours != None %}
       <input type="text" value="{{ post.movie_hours }}" name="hours" maxlength="2" placeholder="tuntia"><br>
+      {% else %}
+      <input type="text" name="hours" maxlength="2" placeholder="tuntia"><br>
+      {% endif %}
+      {% if post.movie_minutes != None %}
       <input type="text" value="{{ post.movie_minutes }}" name="minutes" maxlength="2" placeholder="minuuttia">
+      {% else %}
+      <input type="text" name="minutes" maxlength="2" placeholder="minuuttia">
+      {% endif %}
 
       <br><br>
       <input type="submit" value="Tallenna"></input>

@@ -2,7 +2,7 @@ from flask import Flask
 from flask import redirect, render_template, request, session, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-import feed, users, greet, stats, config
+import math, feed, users, greet, stats, config
 
 
 app = Flask(__name__)
@@ -10,16 +10,27 @@ app.secret_key = config.secret_key()
 
 
 @app.route("/")
-def index():
-    posts = feed.all_posts()
+@app.route("/<int:page>")
+def index(page=1):
+    page_size = 30
+    post_count = feed.count_all()
+    page_count = math.ceil(post_count/page_size)
+    page_count = max(page_count, 1)
+
+    if page < 1:
+        return redirect("/1")
+    if page > page_count:
+        return redirect(f"/{str(page_count)}")
+
+    posts = feed.all_posts(page, page_size)
     greeting = greet.random_greeting()
     stats.action("frontpage")
-    return render_template("feed/index.html", posts=posts, greeting=greeting)
+    return render_template("feed/index.html", page=page, page_count=page_count, posts=posts, greeting=greeting)
     
 
 @app.route("/register")
 def register():
-    return render_template("from/register.html")
+    return render_template("form/register.html")
 
 
 @app.route("/create_user", methods=["POST"])
@@ -118,6 +129,8 @@ def create_post():
         year = request.form["release_year"]
         try:
             year = int(year)
+            if len(str(year)) > 4 or year < 0:
+                raise ValueError
         except:
             return "VIRHE: Tarkista vuosi"\
             "<br><a href=""/add_movie"">Yritä uudelleen</a>" \
@@ -141,6 +154,8 @@ def create_post():
     if hours != None:
         try:
             hours = int(hours)
+            if hours < 0:
+                raise ValueError
         except:
             return "VIRHE: Tarkista tunnit"\
             "<br><a href=""/add_movie"">Yritä uudelleen</a>" \
@@ -201,6 +216,8 @@ def edit_post(post_id):
                 year = request.form["release_year"]
                 try:
                     year = int(year)
+                    if len(str(year)) > 4 or year < 0:
+                        raise ValueError
                 except:
                     return "VIRHE: Tarkista vuosi"\
                     "<br><a href="f"/edit_post/{post_id}"">Yritä uudelleen</a>" \
@@ -224,6 +241,8 @@ def edit_post(post_id):
             if hours != None:
                 try:
                     hours = int(hours)
+                    if hours < 0:
+                        raise ValueError
                 except:
                     return "VIRHE: Tarkista tunnit"\
                     "<br><a href="f"/edit_post/{post_id}"">Yritä uudelleen</a>" \

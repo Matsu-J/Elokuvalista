@@ -1,10 +1,13 @@
 import db
 
-def all_posts():
+def all_posts(page, page_size):
+    limit = page_size
+    offset = page_size*(page-1)
     return db.query("""SELECT p.id, p.user_id, p.title, p.release_year, p.movie_hours, p.movie_minutes, p.rating, p.edited_at, u.id, u.username
                      FROM posts p, users u 
                      WHERE u.id = p.user_id 
-                     ORDER BY p.id DESC""")
+                     ORDER BY p.id DESC
+                     LIMIT ? OFFSET ?""", [limit, offset])
 
 def newest_first():
     return db.query("""SELECT p.id, p.user_id, p.title, p.release_year, p.movie_hours, p.movie_minutes, p.rating, p.edited_at, u.id, u.username
@@ -47,6 +50,10 @@ def search(query):
                      WHERE u.id = p.user_id
                      AND p.title LIKE ?
                      ORDER BY p.id DESC""", [f"%{query}%"])
+
+def count_all():
+    return db.query("""SELECT COUNT(title)
+                    FROM posts""")[0][0]
 
 
 def create_post(parameters):

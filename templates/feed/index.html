@@ -15,27 +15,22 @@
     {{ greeting }}
   </h2>
   <a href="/add_movie">
-    <button>Lisää elokuva listalle</button>
-  </a>
+    <button>Lisää elokuva listalle</button></a>
 
   <a href="/user/{{ session.user_id }}">
-    <button>Oma profiili</button>
-  </a>
+    <button>Oma profiili</button></a>
 
   <a href="/logout">
-    <button>Kirjaudu ulos</button>
-  </a>
+    <button>Kirjaudu ulos</button></a>
   <br>
 
   {% else %}
   <p>Kirjaudu sisään niin näet omat elokuvasi</p>
   <a href="/login">
-    <button>Kirjaudu sisään</button>
-  </a>
+    <button>Kirjaudu sisään</button></a>
   <p>Etkö ole vielä käyttäjä?</p>
   <a href="/register">
-    <button>Rekisteröidy tästä</button>
-  </a>
+    <button>Rekisteröidy tästä</button></a>
   <br>
   {% endif %}
   <br>
@@ -87,6 +82,19 @@
   </p>
     <br>
   {% endfor %}
+
+  <p>
+    {% if page > 1 %}
+    <a href="/{{ page - 1 }}">
+      <button>&lt;&lt;</button></a>
+    {% endif %}
+    Sivu {{ page }}/{{ page_count }}
+    {% if page < page_count %}
+    <a href="/{{ page + 1 }}">
+      <button>&gt;&gt;</button>
+    </a>
+    {% endif %}
+  </p>
 </body>
 
 </html>

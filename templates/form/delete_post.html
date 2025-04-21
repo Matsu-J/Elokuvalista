@@ -9,6 +9,7 @@
     <hr>
     <form method="post">
       <h2>Haluatko varmasti poistaa elokuvan?</h2>
+      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
       <input type="submit" name="confirm" value="Poista" />
       <input type="submit" name="cancel" value="Peruuta"/>
     </form>

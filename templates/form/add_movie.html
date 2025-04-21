@@ -21,6 +21,7 @@
       <input type="text" name="grade" maxlength="3">
 
       <br><br>
+      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
       <input type="submit" value="Lisää"></input>
     </form>
   </body>

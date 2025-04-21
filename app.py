@@ -2,11 +2,21 @@ from flask import Flask
 from flask import redirect, render_template, request, session, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-import math, feed, users, greet, stats, config
+import math, secrets, feed, users, validate, greet, stats, config
 
 
 app = Flask(__name__)
 app.secret_key = config.secret_key()
+
+
+def require_login():
+    if "user_id" not in session:
+        abort(403)
+
+
+def check_csrf():
+    if request.form["csrf_token"] != session["csrf_token"]:
+        abort(403)
 
 
 @app.route("/")
@@ -53,6 +63,7 @@ def create_user():
     
     session["username"] = username
     session["user_id"] = users.get_user_id(username)
+    session["csrf_token"] = secrets.token_hex(16)
     stats.action("create user")
     return redirect("/")
 
@@ -76,6 +87,7 @@ def check_login():
     if check_password_hash(hashed_password, password):
         session["username"] = username
         session["user_id"] = users.get_user_id(username)
+        session["csrf_token"] = secrets.token_hex(16)
         stats.action("login")
         return redirect("/")
     else:
@@ -83,15 +95,11 @@ def check_login():
         "<br><a href=""/login"">Yritä uudelleen</a>"
 
 
-def require_login():
-    if "user_id" not in session:
-        abort(403)
-
-
 @app.route("/logout")
 def logout():
     del session["username"]
     del session["user_id"]
+    del session["csrf_token"]
     return redirect("/")
 
 
@@ -119,24 +127,12 @@ def add_movie():
 @app.route("/create_post", methods=["POST"])
 def create_post():
     require_login()
+    check_csrf()
     title = request.form["title"]
-    if len(title) > 30:
-        return "VIRHE: Tarkista nimen pituus"\
-            "<br><a href=""/add_movie"">Yritä uudelleen</a>" \
-            "<br><a href=""/"">Palaa etusivulle</a>"
 
+    year = None
     if request.form["release_year"]:
         year = request.form["release_year"]
-        try:
-            year = int(year)
-            if len(str(year)) > 4 or year < 0:
-                raise ValueError
-        except:
-            return "VIRHE: Tarkista vuosi"\
-            "<br><a href=""/add_movie"">Yritä uudelleen</a>" \
-            "<br><a href=""/"">Palaa etusivulle</a>"
-    else:
-        year = None
     
     if request.form["hours"] and request.form["minutes"]:
         hours = request.form["hours"]
@@ -150,39 +146,19 @@ def create_post():
     else:
         hours = None
         minutes = None
-    
-    if hours != None:
-        try:
-            hours = int(hours)
-            if hours < 0:
-                raise ValueError
-        except:
-            return "VIRHE: Tarkista tunnit"\
-            "<br><a href=""/add_movie"">Yritä uudelleen</a>" \
-            "<br><a href=""/"">Palaa etusivulle</a>"
-    
-    if minutes != None:
-        try:
-            minutes = int(minutes)
-            if minutes < 0 or minutes > 60:
-                raise ValueError
-        except:
-            return "VIRHE: tarkista minuutit"\
-            "<br><a href=""/add_movie"">Yritä uudelleen</a>" \
-            "<br><a href=""/"">Palaa etusivulle</a>"
-    
+
+    grade = None
     if request.form["grade"]:
-        try:
-            grade = request.form["grade"]
-            if "," in grade:
-                grade = grade.replace(",",".")
-            grade = float(grade)
-            if 1 > grade or grade > 10:
-                raise ValueError
-        except:
-            return "VIRHE: Anna arvosana asteikolla 1-10"\
-            "<br><a href=""/add_movie"">Yritä uudelleen</a>" \
-            "<br><a href=""/"">Palaa etusivulle</a>"
+        grade = request.form["grade"]
+    
+    error = validate.check_post_parameters(title, year, hours, minutes, grade)
+    if error == None:
+        pass
+    else:
+        return f"{error}"\
+        "<br><a href=""/add_movie"">Yritä uudelleen</a>" \
+        "<br><a href=""/"">Palaa etusivulle</a>"
+
     
     edited_at = datetime.now()
     user_id = users.get_user_id(session["username"])
@@ -219,24 +195,12 @@ def edit_post(post_id):
             return render_template("form/edit_post.html", post=post)
         
         if request.method == "POST":
+            check_csrf()
             title = request.form["title"]
-            if len(title) > 30:
-                return "VIRHE: Tarkista nimen pituus"\
-                    "<br><a href="f"/edit_post/{post_id}"">Yritä uudelleen</a>" \
-                    "<br><a href=""/"">Palaa etusivulle</a>"
 
+            year = None
             if request.form["release_year"]:
                 year = request.form["release_year"]
-                try:
-                    year = int(year)
-                    if len(str(year)) > 4 or year < 0:
-                        raise ValueError
-                except:
-                    return "VIRHE: Tarkista vuosi"\
-                    "<br><a href="f"/edit_post/{post_id}"">Yritä uudelleen</a>" \
-                    "<br><a href=""/"">Palaa etusivulle</a>"
-            else:
-                year = None
             
             if request.form["hours"] and request.form["minutes"]:
                 hours = request.form["hours"]
@@ -251,38 +215,17 @@ def edit_post(post_id):
                 hours = None
                 minutes = None
 
-            if hours != None:
-                try:
-                    hours = int(hours)
-                    if hours < 0:
-                        raise ValueError
-                except:
-                    return "VIRHE: Tarkista tunnit"\
-                    "<br><a href="f"/edit_post/{post_id}"">Yritä uudelleen</a>" \
-                    "<br><a href=""/"">Palaa etusivulle</a>"
-            
-            if minutes != None:
-                try:
-                    minutes = int(minutes)
-                    if minutes < 0 or minutes > 60:
-                        raise ValueError
-                except:
-                    return "VIRHE: tarkista minuutit"\
-                    "<br><a href="f"/edit_post/{post_id}"">Yritä uudelleen</a>" \
-                    "<br><a href=""/"">Palaa etusivulle</a>"
-                
+            grade = None    
             if request.form["grade"]:
-                try:
-                    grade = request.form["grade"]
-                    if "," in grade:
-                        grade = grade.replace(",",".")
-                    grade = float(grade)
-                    if 1 > grade or grade > 10:
-                        raise ValueError
-                except:
-                    return "VIRHE: Anna arvosana asteikolla 1-10"\
-                    "<br><a href="f"/edit_post/{post_id}"">Yritä uudelleen</a>" \
-                    "<br><a href=""/"">Palaa etusivulle</a>"
+                grade = request.form["grade"]
+
+            error = validate.check_post_parameters(title, year, hours, minutes, grade)
+            if error == None:
+                pass
+            else:
+                return f"{error}"\
+                "<br><a href="f"/edit_post/{post_id}"">Yritä uudelleen</a>" \
+                "<br><a href=""/"">Palaa etusivulle</a>"
     
             edited_at = datetime.now()
 
@@ -292,7 +235,7 @@ def edit_post(post_id):
                 "<br><a href=""/"">Palaa etusivulle</a>"
             except:
                 return "VIRHE" \
-                "<br><a href=""/add_movie"">Yritä uudelleen</a>" \
+                "<br><a href="f"/edit_post/{post_id}"">Yritä uudelleen</a>" \
                 "<br><a href=""/"">Palaa etusivulle</a>"
 
 

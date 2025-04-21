@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fi">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %}</title>
+  </head>
+
+  <body>
+    <div>
+        <h1>Elokuvalista</h1><hr>
+        {% if session.username %}
+        <h2>
+          {{ greeting }}
+        </h2>
+        <a href="/add_movie">
+          <button>Lisää elokuva listalle</button></a>
+      
+        <a href="/user/{{ session.user_id }}">
+          <button>Oma profiili</button></a>
+      
+        <a href="/logout">
+          <button>Kirjaudu ulos</button></a>
+        <br>
+      
+        {% else %}
+        <p>Kirjaudu sisään niin näet omat elokuvasi</p>
+        <a href="/login">
+          <button>Kirjaudu sisään</button></a>
+        <p>Etkö ole vielä käyttäjä?</p>
+        <a href="/register">
+          <button>Rekisteröidy tästä</button></a>
+        <br>
+        {% endif %}
+        
+      {% block options %}
+      {% endblock %}
+      <hr>
+      <br>
+    </div>
+
+    <div>
+      {% block posts %}
+      {% for post in posts %}
+      <a href="/user/{{ post.user_id }}">{{ post.username }}</a>
+      <a> - </a>
+      <a href="/post/{{ post.id }}">
+        {{ post.title }}
+      </a>
+      {% if post.release_year %}
+      <p>Julkaisuvuosi: {{ post.release_year }}</p>
+      {% endif %}
+    <p>
+      </p>
+        {% if post.movie_hours %}
+        <p>Kesto: {{ post.movie_hours }} tuntia {{ post.movie_minutes }} minuuttia</p>
+        {% endif %}
+      <p>
+        {% if post.rating %}
+        <p>Käyttäjän arvio: {{ post.rating }} / 10</p>
+        {% endif %}
+        ({{ post.edited_at }})
+      </p>
+        <br>
+      {% endfor %}
+      {% endblock %}
+    </div>
+
+    <div>
+      {% block pages %}
+      {% endblock %}
+    </div>
+  </body>
+</html>

@@ -1,28 +1,23 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Elokuvalista - Lisää elokuva</title>
-  </head>
-  <body>
-    <h2>Lisää elokuva listalle:</h2>
-    
-    <form action="/create_post" method="post">
-      <p>Elokuvan nimi:</p>
-      <input type="text" name="title" maxlength="30" required>
+{% extends "form/base.html" %}
+{% block title %}Elokuvalista - Lisää elokuva{% endblock %}
+{% block description %}Lisää elokuva listalle{% endblock %}
+{% block form %}
+  <form action="/create_post" method="post">
+    <p>Elokuvan nimi:</p>
+    <input type="text" name="title" maxlength="30" required>
 
-      <p>Julkaisuvuosi</p>
-      <input type="text" name="release_year" maxlength="4">
+    <p>Julkaisuvuosi</p>
+    <input type="text" name="release_year" maxlength="4">
 
-      <p>Elokuvan pituus</p>
-      <input type="text" name="hours" placeholder="tuntia" maxlength="2"><br>
-      <input type="text" name="minutes" placeholder="minuuttia" maxlength="2"><br>
+    <p>Elokuvan pituus</p>
+    <input type="text" name="hours" placeholder="tuntia" maxlength="2"><br>
+    <input type="text" name="minutes" placeholder="minuuttia" maxlength="2"><br>
 
-      <p>Arvosana 1 - 10</p>
-      <input type="text" name="grade" maxlength="3">
+    <p>Arvosana 1 - 10</p>
+    <input type="text" name="grade" maxlength="3">
 
-      <br><br>
-      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-      <input type="submit" value="Lisää"></input>
-    </form>
-  </body>
-</html>
+    <br><br>
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+    <input type="submit" value="Lisää"></input>
+  </form>
+{% endblock %}

@@ -1,42 +1,35 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Elokuvalista - Muokkaa</title>
-  </head>
+{% extends "form/base.html" %}
+{% block title %}Elokuvalista - Muokkaa{% endblock %}
+{% block description %}Muokkaa elokuvaa{% endblock %}
+{% block form %}
+  <form action="/edit_post/{{ post.id }}" method="post">
+    <p>Elokuvan nimi:</p>
+    <input type="text" value="{{ post.title }}" name="title" maxlength="30" required>
 
-  <body>
-    <h1>Elokuvalista</h1>
-    <hr>
-    <h2>Muokkaa elokuvaa</h2>
-    
-    <form action="/edit_post/{{ post.id }}" method="post">
-      <p>Elokuvan nimi:</p>
-      <input type="text" value="{{ post.title }}" name="title" maxlength="30" required>
+    <p>Julkaisuvuosi</p>
+    {% if post.release_year != None %}
+    <input type="text" value="{{ post.release_year }}" maxlength="4" name="release_year">
+    {% else %}
+    <input type="text" maxlength="4" name="release_year">
+    {% endif %}
 
-      <p>Julkaisuvuosi</p>
-      {% if post.release_year != None %}
-      <input type="text" value="{{ post.release_year }}" maxlength="4" name="release_year">
-      {% else %}
-      <input type="text" maxlength="4" name="release_year">
-      {% endif %}
+    <p>Elokuvan pituus</p>
+    {% if post.movie_hours != None %}
+    <input type="text" value="{{ post.movie_hours }}" name="hours" maxlength="2" placeholder="tuntia"><br>
+    {% else %}
+    <input type="text" name="hours" maxlength="2" placeholder="tuntia"><br>
+    {% endif %}
+    {% if post.movie_minutes != None %}
+    <input type="text" value="{{ post.movie_minutes }}" name="minutes" maxlength="2" placeholder="minuuttia">
+    {% else %}
+    <input type="text" name="minutes" maxlength="2" placeholder="minuuttia">
+    {% endif %}
 
-      <p>Elokuvan pituus</p>
-      {% if post.movie_hours != None %}
-      <input type="text" value="{{ post.movie_hours }}" name="hours" maxlength="2" placeholder="tuntia"><br>
-      {% else %}
-      <input type="text" name="hours" maxlength="2" placeholder="tuntia"><br>
-      {% endif %}
-      {% if post.movie_minutes != None %}
-      <input type="text" value="{{ post.movie_minutes }}" name="minutes" maxlength="2" placeholder="minuuttia">
-      {% else %}
-      <input type="text" name="minutes" maxlength="2" placeholder="minuuttia">
-      {% endif %}
+    <p>Arvosana 1 - 10</p>
+    <input type="text" name="grade" maxlength="3">
 
-      <p>Arvosana 1 - 10</p>
-      <input type="text" name="grade" maxlength="3">
-
-      <br><br>
-      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-      <input type="submit" value="Tallenna"></input>
-  </body>
-</html>
+    <br><br>
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+    <input type="submit" value="Tallenna"></input>
+  </form>
+{% endblock %}

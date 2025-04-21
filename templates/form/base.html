@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="fi">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %}</title>
+  </head>
+
+  <body>
+    <div>
+      <h1>Elokuvalista - {% block description %}{% endblock %}</h1>
+      <hr>
+    </div>
+    
+    <div>
+      {% block form %}
+      {% endblock %}
+    </div>
+
+  </body>
+</html>

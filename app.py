@@ -253,6 +253,7 @@ def delete_post(post_id):
         if request.method == "GET":
             return render_template("form/delete_post.html", post=post)
         if request.method == "POST":
+            check_csrf()
             if "confirm" in request.form:
                 feed.delete_post(post_id)
                 return "Elokuva poistettu!" \

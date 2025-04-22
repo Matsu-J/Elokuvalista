@@ -1,6 +1,7 @@
 {% extends "form/base.html" %}
 {% block title %}Elokuvalista - Lisää elokuva{% endblock %}
 {% block description %}Lisää elokuva listalle{% endblock %}
+{% block errors %}{{ super() }}{% endblock %}
 {% block form %}
   <form action="/create_post" method="post">
     <p>Elokuvan nimi:</p>

@@ -12,6 +12,17 @@
     </div>
     
     <div>
+      {% block errors %}
+      {% for message in get_flashed_messages() %}
+      <p>
+        <b>{{ message }}</b>
+      </p>
+      <hr>
+      {% endfor %}
+      {% endblock %}
+    </div>
+
+    <div>
       {% block form %}
       {% endblock %}
     </div>

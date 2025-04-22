@@ -8,6 +8,16 @@
   <body>
     <div>
         <h1>Elokuvalista</h1><hr>
+
+        {% block messages %}
+        {% for message in get_flashed_messages() %}
+        <p>
+            <b>{{ message }}</b>
+        </p>
+        <hr>
+        {% endfor %}
+        {% endblock %}
+
         {% if session.username %}
         <h2>
           {{ greeting }}
@@ -23,15 +33,15 @@
         <br>
       
         {% else %}
-        <p>Kirjaudu sisään niin näet omat elokuvasi</p>
+        
         <a href="/login">
           <button>Kirjaudu sisään</button></a>
-        <p>Etkö ole vielä käyttäjä?</p>
+        
         <a href="/register">
           <button>Rekisteröidy tästä</button></a>
         <br>
         {% endif %}
-        
+
       {% block options %}
       {% endblock %}
       <hr>

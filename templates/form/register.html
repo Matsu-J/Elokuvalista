@@ -1,6 +1,7 @@
 {% extends "form/base.html" %}
 {% block title %}Elokuvalista - Rekisteröidy{% endblock %}
 {% block description %}Luo uusi käyttäjä{% endblock %}
+{% block errors %}{{ super() }}{% endblock %}
 {% block form %}
   <form action="/create_user" method="post">
     <p>

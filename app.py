@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import redirect, render_template, request, session, abort
+from flask import redirect, render_template, request, session, abort, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import math, secrets, feed, users, validate, greet, stats, config
@@ -35,7 +35,11 @@ def index(page=1):
     posts = feed.all_posts(page, page_size)
     greeting = greet.random_greeting()
     stats.action("frontpage")
-    return render_template("feed/index.html", page=page, page_count=page_count, posts=posts, greeting=greeting)
+    return render_template("feed/index.html", 
+                           page=page, 
+                           page_count=page_count, 
+                           posts=posts, 
+                           greeting=greeting)
     
 
 @app.route("/register")
@@ -50,21 +54,23 @@ def create_user():
     confirmed_password = request.form["password_confirm"]
 
     if password != confirmed_password:
-        return "Salasanat eivät täsmää!" \
-        "<br><a href=""/register"">Yritä uudelleen</a>"
+        flash("Salasanat eivät täsmää!")
+        return redirect("/create_user")
+        
     
     hashed_password = generate_password_hash(password)
 
     try:
         users.create_user(username, hashed_password)
     except:
-        return "Käyttäjätunnus on jo olemassa" \
-        "<br><a href=""/login"">Kirjaudu sisään?</a>"
+        flash("Käyttäjätunnus on jo olemassa")
+        return redirect("/create_user")
     
     session["username"] = username
     session["user_id"] = users.get_user_id(username)
     session["csrf_token"] = secrets.token_hex(16)
     stats.action("create user")
+    flash("Käyttäjä luotu!")
     return redirect("/")
 
 
@@ -81,8 +87,8 @@ def check_login():
     try:
         hashed_password = users.get_password_hash(username)
     except:
-        return "Käyttäjätunnusta ei löydy" \
-        "<br><a href=""/register"">Rekisteröi uusi käyttäjä</a>"
+        flash("Käyttäjätunnusta ei löydy")
+        return redirect("/login")
     
     if check_password_hash(hashed_password, password):
         session["username"] = username
@@ -91,8 +97,8 @@ def check_login():
         stats.action("login")
         return redirect("/")
     else:
-        return "Väärä tunnus tai salasana" \
-        "<br><a href=""/login"">Yritä uudelleen</a>"
+        flash("Väärä tunnus tai salasana")
+        return redirect("/login")
 
 
 @app.route("/logout")
@@ -155,9 +161,8 @@ def create_post():
     if error == None:
         pass
     else:
-        return f"{error}"\
-        "<br><a href=""/add_movie"">Yritä uudelleen</a>" \
-        "<br><a href=""/"">Palaa etusivulle</a>"
+        flash(error)
+        return redirect("/add_movie")
 
     
     edited_at = datetime.now()
@@ -166,12 +171,11 @@ def create_post():
     try:
         feed.create_post([user_id, title, year, hours, minutes, grade, edited_at])
         stats.action("post created")
-        return "Elokuva lisätty!" \
-        "<br><a href=""/"">Palaa etusivulle</a>"
+        flash("Elokuva lisätty!")
+        return redirect("/")
     except:
-        return "VIRHE" \
-        "<br><a href=""/add_movie"">Yritä uudelleen</a>" \
-        "<br><a href=""/"">Palaa etusivulle</a>"
+        flash("VIRHE")
+        return redirect("/add_movie")
 
 
 @app.route("/post/<int:post_id>")
@@ -223,20 +227,20 @@ def edit_post(post_id):
             if error == None:
                 pass
             else:
-                return f"{error}"\
-                "<br><a href="f"/edit_post/{post_id}"">Yritä uudelleen</a>" \
-                "<br><a href=""/"">Palaa etusivulle</a>"
+                flash(error)
+                return redirect(f"/edit_post/{post_id}")
+                
     
             edited_at = datetime.now()
 
             try:
                 feed.edit_post([title, year, hours, minutes, grade, edited_at, post_id])
-                return "Muokkaukset tallennettu!" \
-                "<br><a href=""/"">Palaa etusivulle</a>"
+                flash("Muokkaukset tallennettu!") 
+                return redirect(f"/post/{post_id}")
             except:
-                return "VIRHE" \
-                "<br><a href="f"/edit_post/{post_id}"">Yritä uudelleen</a>" \
-                "<br><a href=""/"">Palaa etusivulle</a>"
+                error = "VIRHE" 
+                flash(error)
+                return redirect(f"/edit_post/{post_id}")
 
 
 @app.route("/delete_post/<int:post_id>", methods=["GET", "POST"])
@@ -256,8 +260,8 @@ def delete_post(post_id):
             check_csrf()
             if "confirm" in request.form:
                 feed.delete_post(post_id)
-                return "Elokuva poistettu!" \
-                "<br><a href=""/"">Palaa etusivulle</a>"
+                flash("Elokuva poistettu!")
+                return redirect("/")
             return redirect("/post/" + str(post_id))
 
 

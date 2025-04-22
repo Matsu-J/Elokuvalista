@@ -4,6 +4,8 @@
   Elokuvalista - Tulokset haulle {{ query }}
 {%endblock%}
 
+{% block messages %}{{ super () }}{% endblock %}
+
 {% block options %}
   <div>
     <h3>Tulokset haulle {{ query }}</h3>

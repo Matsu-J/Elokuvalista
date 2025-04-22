@@ -1,6 +1,7 @@
 {% extends "form/base.html" %}
 {% block title %}Elokuvalista - Muokkaa{% endblock %}
 {% block description %}Muokkaa elokuvaa{% endblock %}
+{% block errors %}{{ super() }}{% endblock %}
 {% block form %}
   <form action="/edit_post/{{ post.id }}" method="post">
     <p>Elokuvan nimi:</p>

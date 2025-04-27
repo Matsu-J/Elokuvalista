@@ -182,9 +182,36 @@ def create_post():
 def show_post(post_id):
     try:
         post = feed.get_post(post_id)
-        return render_template("post.html", post=post)
+        comments = feed.get_comments(post_id)
+        return render_template("post.html", post=post, comments=comments)
     except:
         abort(404)
+
+
+@app.route("/add_comment", methods=["POST"])
+def add_comment():
+    require_login()
+    check_csrf()
+
+    comment = request.form["comment"]
+
+    grade = None
+    if request.form["grade"]:
+        grade = request.form["grade"]
+    
+    user_id = session["user_id"]
+    post_id = request.form["post_id"]
+
+    error = validate.check_comment(comment, grade)
+    if error == None:
+        edited_at = datetime.now()
+        feed.add_comment(post_id, user_id, comment, grade, edited_at)
+        stats.action("comment")
+        flash("Kommentti lisätty!")
+        return redirect(f"/post/{post_id}")
+    else:
+        flash(error)
+        return redirect(f"/post/{post_id}")
 
 
 @app.route("/edit_post/<int:post_id>", methods=["GET", "POST"])

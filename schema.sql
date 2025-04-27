@@ -26,5 +26,6 @@ CREATE TABLE comments (
     post_id INTEGER REFERENCES posts,
     user_id INTEGER REFERENCES users,
     content TEXT,
+    rating TEXT DEFAULT NULL,
     edited_at TEXT
 );

@@ -15,8 +15,6 @@
       <hr>
       {% endfor %}
       
-    <a href="/">Palaa etusivulle</a>
-    <br>
 
     <h2>{{ post.title }}</h2>
 
@@ -33,12 +31,55 @@
     {% endif %}
     
     <p>Lisännyt: {{ post.username }}</p>
-
+    
+    <a href="/">
+      <button>Palaa etusivulle</button></a>
     {% if session.user_id == post.user_id%}
-    <a href="/edit_post/{{ post.id }}">Muokkaa</a>
-    <br><br>
-    <a href="/delete_post/{{ post.id }}">Poista</a>
+    <a href="/edit_post/{{ post.id }}">
+      <button>Muokkaa</button></a>
+    <a href="/delete_post/{{ post.id }}">
+      <button>Poista</button></a>
     {% endif %}
+    
+    <hr>
+    {% if session.username %}
+    <form action="/add_comment" method="post">
+      <p>
+        <label>Kommentti:</label><br>
+        <textarea name="comment" rows="3" cols="40" maxlength="2000" required></textarea>
+      </p>
 
+      <p>Arvosana 1 - 10</p>
+      <input type="text" name="grade" maxlength="3">
+      <br><br>
+      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+      <input type="hidden" name="post_id" value="{{ post.id }}">
+      <input type="submit" value="Kommentoi">
+    </form>
+
+    </form>
+    {% else %}
+    <p>Kirjaudu sisään tai rekisteröidy, jotta voit kommentoida</p>
+    <a href="/login">
+      <button>Kirjaudu sisään</button></a>
+    
+    <a href="/register">
+      <button>Rekisteröidy</button></a>
+    {% endif %}
+    <hr>
+
+    <div>
+        {% for comment in comments %}
+        <h4>{{ comment.username }}
+          {% if comment.rating %}
+            - ({{ comment.rating }} / 10)
+          {% endif %}
+        </h4>
+          
+        <p>{{ comment.content }}</p>
+        <p>{{ comment.edited_at }}</p>
+        <br>
+        {% endfor %}
+    </div>
   </body>
 </html>

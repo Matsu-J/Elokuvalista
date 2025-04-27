@@ -44,6 +44,14 @@ def get_post(post_id):
                         FROM posts p, users u 
                         WHERE p.id = ? AND p.user_id = u.id""", [post_id])[0]
 
+def get_comments(post_id):
+    return db.query("""SELECT u.username, c.content, c.rating, c.edited_at
+                    FROM users u, comments c
+                    WHERE u.id = c.user_id
+                    AND c.post_id = ?
+                    ORDER BY c.id DESC
+                    """, [post_id])
+
 def search(query):
     return db.query("""SELECT p.id, p.user_id, p.title, p.release_year, p.movie_hours, p.movie_minutes, p.rating, p.edited_at, u.id, u.username
                      FROM posts p, users u 
@@ -64,3 +72,6 @@ def edit_post(parameters):
 
 def delete_post(post_id):
     db.execute("DELETE FROM posts WHERE id = ?", [post_id])
+
+def add_comment(post_id, user_id, content, rating, edited_at):
+    db.execute("INSERT INTO comments (post_id, user_id, content, rating, edited_at) VALUES (?, ?, ?, ?, ?)", [post_id, user_id, content, rating, edited_at])

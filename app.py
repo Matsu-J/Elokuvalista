@@ -117,7 +117,7 @@ def user_page(user_id):
         abort(404)
     count_all = users.count_all(user_id)
     posts = users.get_posts(user_id)
-    return render_template("user.html", 
+    return render_template("pages/user.html", 
                            username=user, 
                            user_id=user_id,
                            count_all=count_all,
@@ -183,7 +183,7 @@ def show_post(post_id):
     try:
         post = feed.get_post(post_id)
         comments = feed.get_comments(post_id)
-        return render_template("post.html", post=post, comments=comments)
+        return render_template("pages/post.html", post=post, comments=comments)
     except:
         abort(404)
 
@@ -284,12 +284,12 @@ def delete_post(post_id):
         if request.method == "GET":
             return render_template("form/delete_post.html", post=post)
         if request.method == "POST":
-            check_csrf()
+            check_csrf() 
             if "confirm" in request.form:
                 feed.delete_post(post_id)
                 flash("Elokuva poistettu!")
                 return redirect("/")
-            return redirect("/post/" + str(post_id))
+            return redirect(f"/post/{post_id}")
 
 
 @app.route("/sorted", methods=["POST"])

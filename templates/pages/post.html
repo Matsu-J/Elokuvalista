@@ -1,21 +1,10 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Elokuavlista</title>
-  </head>
+{% extends "pages/base.html" %}
 
-  <body>
-    <h1>Elokuvalista</h1>
-    <hr>
+  {% block title %}Elokuvalista - {{ post.title }}{% endblock %}
 
-    {% for message in get_flashed_messages() %}
-      <p>
-        <b>{{ message }}</b>
-      </p>
-      <hr>
-      {% endfor %}
-      
+  {% block errors %}{{ super() }}{% endblock %}
 
+  {% block description %}
     <h2>{{ post.title }}</h2>
 
     {% if post.release_year %}
@@ -67,7 +56,9 @@
       <button>Rekisteröidy</button></a>
     {% endif %}
     <hr>
+  {% endblock %}
 
+  {% block content %}
     <div>
         {% for comment in comments %}
         <h4>{{ comment.username }}
@@ -81,5 +72,4 @@
         <br>
         {% endfor %}
     </div>
-  </body>
-</html>
+    {% endblock %}

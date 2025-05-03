@@ -71,7 +71,8 @@ def edit_post(parameters):
     db.execute("UPDATE posts SET title = ?, release_year = ?, movie_hours = ?, movie_minutes = ?, rating = ?, edited_at = ? WHERE id = ?", parameters)
 
 def delete_post(post_id):
+    db.execute("DELETE FROM comments WHERE post_id = ?", [post_id])
     db.execute("DELETE FROM posts WHERE id = ?", [post_id])
-
+    
 def add_comment(post_id, user_id, content, rating, edited_at):
     db.execute("INSERT INTO comments (post_id, user_id, content, rating, edited_at) VALUES (?, ?, ?, ?, ?)", [post_id, user_id, content, rating, edited_at])

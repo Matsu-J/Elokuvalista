@@ -1,11 +1,10 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Elokuvalista - {{ username }}</title>
-  </head>
-  <body>
-    <h1>Elokuvalista</h1>
-    <hr>
+{% extends "pages/base.html" %}
+
+  {% block title %}{% endblock %}
+
+  {% block errors %}{{ super() }}{% endblock %}
+ 
+  {% block description %}
     <h2>{{ username }}</h2>
 
     {% if session.user_id == user_id %}
@@ -16,9 +15,12 @@
     <p>Käyttäjä on lisännyt listalleen {{ count_all }} elokuvaa</p>
     {% endif %}
 
-    <a href="/">Palaa etusivulle</a>
+    <a href="/">
+      <button>Palaa etusivulle</button></a>
     <hr><br>
+  {% endblock %}
 
+  {% block content %}
     {% for post in posts %}
     <a href="/post/{{ post.id }}">
         {{ post.title }}
@@ -39,5 +41,4 @@
     </p>
         <br>
     {% endfor %}
-  </body>
-</html>
+  {% endblock %}

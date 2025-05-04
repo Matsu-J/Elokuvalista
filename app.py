@@ -168,7 +168,7 @@ def user_page(user_id):
     posts = users.get_posts(user_id)
     average = 0
     if users.average_rating(user_id) and users.count_ratings(user_id) > 0:
-        average=(users.average_rating(user_id)/users.count_ratings(user_id))
+        average = f"{(users.average_rating(user_id)/users.count_ratings(user_id)):.2f}"
     return render_template("pages/user.html", 
                            username=user, 
                            user_id=user_id,

@@ -11,10 +11,14 @@
 
     {% if session.user_id == user_id %}
     <p>Olet lisännyt listallesi {{ count_all }} elokuvaa</p>
+    <p>Olet arvostellut {{ count_ratings }} elokuvaa</p>
+    <p>Arvostelujen keskiarvo {{average}}</p>
     {% endif %}
 
     {% if session.user_id != user_id %}
     <p>Käyttäjä on lisännyt listalleen {{ count_all }} elokuvaa</p>
+    <p>Käyttäjä on arvostellut {{ count_ratings }} elokuvaa</p>
+    <p>Arvostelujen keskiarvo {{average}}</p>
     {% endif %}
   </div>
   {% endblock %}

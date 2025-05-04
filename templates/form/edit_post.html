@@ -3,11 +3,12 @@
 {% block greeting %}Muokkaa elokuvaa{% endblock %}
 {% block navbuttons %}<a class="nav_button" href="/">Palaa etusivulle</a>{% endblock %}
 {% block errors %}{{ super() }}{% endblock %}
+
 {% block form %}
 <div class="options">
   <form action="/edit_post/{{ post.id }}" method="post">
     <p>Elokuvan nimi:</p>
-    <input type="text" value="{{ post.title }}" name="title" maxlength="30" required>
+    <input type="text" value="{{ post.title }}" name="title" maxlength="60" required>
 
     <p>Julkaisuvuosi</p>
     {% if post.release_year != None %}

@@ -9,16 +9,6 @@ app = Flask(__name__)
 app.secret_key = config.secret_key()
 
 
-def require_login():
-    if "user_id" not in session:
-        abort(403)
-
-
-def check_csrf():
-    if request.form["csrf_token"] != session["csrf_token"]:
-        abort(403)
-
-
 @app.route("/")
 @app.route("/<int:page>")
 def index(page=1):
@@ -41,6 +31,16 @@ def index(page=1):
                            posts=posts, 
                            greeting=greeting)
     
+
+def require_login():
+    if "user_id" not in session:
+        abort(403)
+
+
+def check_csrf():
+    if request.form["csrf_token"] != session["csrf_token"]:
+        abort(403)
+
 
 @app.route("/register")
 def register():
@@ -114,12 +114,17 @@ def user_page(user_id):
         user = (users.get_user(user_id))
     except:
         abort(404)
-    count_all = users.count_all(user_id)
+    
     posts = users.get_posts(user_id)
+    average = 0
+    if users.average_rating(user_id) and users.count_ratings(user_id) > 0:
+        average=(users.average_rating(user_id)/users.count_ratings(user_id))
     return render_template("pages/user.html", 
                            username=user, 
                            user_id=user_id,
-                           count_all=count_all,
+                           count_all=users.count_all(user_id),
+                           count_ratings=users.count_ratings(user_id),
+                           average=average,
                            posts=posts)
 
 
@@ -147,7 +152,7 @@ def create_post():
         minutes = 0
     elif not request.form["hours"] and request.form["minutes"]:
         hours = 0
-        minutes = request.form["hours"]
+        minutes = request.form["minutes"]
     else:
         hours = None
         minutes = None
@@ -158,12 +163,15 @@ def create_post():
     
     error = validate.check_post_parameters(title, year, hours, minutes, grade)
     if error == None:
+        if grade:
+            if "," in grade:
+                grade = grade.replace(",",".")
+            grade = float(grade)
         pass
     else:
         flash(error)
         return redirect("/add_movie")
 
-    
     edited_at = datetime.now().isoformat(" ", "minutes")
     user_id = users.get_user_id(session["username"])
 
@@ -203,6 +211,10 @@ def add_comment():
 
     error = validate.check_comment(comment, grade)
     if error == None:
+        if grade:
+            if "," in grade:
+                grade = grade.replace(",",".")
+            grade = float(grade)
         edited_at = datetime.now().isoformat(" ", "minutes")
         feed.add_comment(post_id, user_id, comment, grade, edited_at)
         stats.action("comment")
@@ -251,6 +263,10 @@ def edit_post(post_id):
 
             error = validate.check_post_parameters(title, year, hours, minutes, grade)
             if error == None:
+                if grade:
+                    if "," in grade:
+                        grade = grade.replace(",",".")
+                    grade = float(grade)
                 pass
             else:
                 flash(error)

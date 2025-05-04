@@ -2,7 +2,7 @@ def check_post_parameters(title, year, hours, minutes, grade):
     error = None
     print(title, year, hours, minutes, grade)
 
-    if len(title) > 30:
+    if len(title) > 60:
         error = "VIRHE: Tarkista nimen pituus"
         return error
 

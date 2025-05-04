@@ -19,6 +19,19 @@ def count_all(user_id):
                     FROM posts
                     WHERE user_id = ?""", [user_id])[0][0]
 
+def count_ratings(user_id):
+    return db.query("""SELECT COUNT(id)
+                    FROM posts
+                    WHERE user_id = ? 
+                    AND rating NOT NULL""", [user_id])[0][0]
+
+def average_rating(user_id):
+    return db.query("""SELECT SUM(rating)
+                    FROM posts
+                    WHERE user_id = ? 
+                    AND rating NOT NULL""", [user_id])[0][0]
+
+
 def get_posts(user_id):
     return db.query("""SELECT p.id, p.user_id, p.title, p.release_year, p.movie_hours, p.movie_minutes, p.rating, p.edited_at, u.id, u.username
                      FROM posts p, users u 

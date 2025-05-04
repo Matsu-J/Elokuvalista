@@ -30,7 +30,44 @@ def index(page=1):
                            page_count=page_count, 
                            posts=posts, 
                            greeting=greeting)
-    
+
+
+@app.route("/sorted", methods=["POST"])
+def sorted():
+    greeting = greet.random_greeting()
+    try:
+        sort_by = request.form["sort"]
+        if sort_by == "1":
+            sorted_by = "Vanhin ensin"
+            posts = feed.oldest_first()
+        if sort_by == "2":
+            sorted_by = "Uusin ensin"
+            posts = feed.newest_first()
+        if sort_by == "3":
+            sorted_by = "Pisin ensin"
+            posts = feed.longest_first()
+        if sort_by == "4":
+            sorted_by = "Lyhyin ensin"
+            posts = feed.shortest_first()
+        return render_template("feed/sorted.html", posts=posts, sorted_by=sorted_by, greeting=greeting)
+    except:
+        return redirect("/")
+
+
+@app.route("/search", methods=["GET"])
+def search():
+    query = request.args.get("query")
+    results = feed.search(query)
+    greeting = greet.random_greeting()
+    return render_template("feed/search.html", posts=results, query=query, greeting=greeting)
+
+
+
+
+
+
+
+
 
 def require_login():
     if "user_id" not in session:
@@ -126,6 +163,13 @@ def user_page(user_id):
                            count_ratings=users.count_ratings(user_id),
                            average=average,
                            posts=posts)
+
+
+
+
+
+
+
 
 
 @app.route("/add_movie")
@@ -225,10 +269,78 @@ def add_comment():
         return redirect(f"/post/{post_id}")
 
 
+@app.route("/edit_comment/<int:comment_id>", methods=["GET", "POST"])
+def edit_comment(comment_id):
+    require_login()
+    try:
+        comment = feed.get_comment(comment_id)
+    except:
+        abort(404)
+    
+    if comment["user_id"] != session["user_id"]:
+        abort(403)
+
+    else:
+        if request.method == "GET":
+            return render_template("form/edit_comment.html", comment=comment)
+        
+        if request.method == "POST":
+            check_csrf()
+            content = request.form["comment"]
+            grade = None
+            if request.form["grade"]:
+                grade = request.form["grade"]
+            
+            error = validate.check_comment_edit(content, grade)
+            if error == None:
+                if grade:
+                    if "," in grade:
+                        grade = grade.replace(",",".")
+                    grade = float(grade)
+            else:
+                flash(error)
+                return redirect(f"/edit_comment/{comment_id}")
+            
+            try:
+                edited_at = datetime.now().isoformat(" ", "minutes")
+                feed.edit_comment([content, grade, edited_at, comment_id])
+                flash("Muokkaukset tallennettu!") 
+                return redirect(f"/post/{comment["post_id"]}")
+            except:
+                error = "VIRHE" 
+                flash(error)
+                return redirect(f"/edit_comment/{comment_id}")
+            
+
+@app.route("/delete_comment/<int:comment_id>", methods=["GET", "POST"])
+def delete_comment(comment_id):
+    require_login()
+    try:
+        comment = feed.get_comment(comment_id)
+    except:
+        abort(404)
+    if comment["user_id"] != session["user_id"]:
+        abort(403)
+    
+    else:
+        if request.method == "GET":
+            return render_template("form/delete_comment.html", comment=comment)
+        if request.method == "POST":
+            check_csrf() 
+            if "confirm" in request.form:
+                feed.delete_comment(comment_id)
+                flash("Kommentti poistettu!")
+                return redirect(f"/post/{comment["post_id"]}")
+            return redirect(f"/post/{comment["post_id"]}")
+
+
 @app.route("/edit_post/<int:post_id>", methods=["GET", "POST"])
 def edit_post(post_id):
     require_login()
-    post = feed.get_post(post_id)
+    try:
+        post = feed.get_post(post_id)
+    except:
+        abort(404)
     if post["user_id"] != session["user_id"]:
         abort(403)
 
@@ -267,7 +379,6 @@ def edit_post(post_id):
                     if "," in grade:
                         grade = grade.replace(",",".")
                     grade = float(grade)
-                pass
             else:
                 flash(error)
                 return redirect(f"/edit_post/{post_id}")
@@ -305,33 +416,3 @@ def delete_post(post_id):
                 flash("Elokuva poistettu!")
                 return redirect("/")
             return redirect(f"/post/{post_id}")
-
-
-@app.route("/sorted", methods=["POST"])
-def sorted():
-    greeting = greet.random_greeting()
-    try:
-        sort_by = request.form["sort"]
-        if sort_by == "1":
-            sorted_by = "Vanhin ensin"
-            posts = feed.oldest_first()
-        if sort_by == "2":
-            sorted_by = "Uusin ensin"
-            posts = feed.newest_first()
-        if sort_by == "3":
-            sorted_by = "Pisin ensin"
-            posts = feed.longest_first()
-        if sort_by == "4":
-            sorted_by = "Lyhyin ensin"
-            posts = feed.shortest_first()
-        return render_template("feed/sorted.html", posts=posts, sorted_by=sorted_by, greeting=greeting)
-    except:
-        return redirect("/")
-
-
-@app.route("/search", methods=["GET"])
-def search():
-    query = request.args.get("query")
-    results = feed.search(query)
-    greeting = greet.random_greeting()
-    return render_template("feed/search.html", posts=results, query=query, greeting=greeting)

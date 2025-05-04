@@ -1,0 +1,29 @@
+{% extends "form/base.html" %}
+{% block title %}Elokuvalista - Muokkaa{% endblock %}
+{% block greeting %}Muokkaa kommenttia{% endblock %}
+{% block navbuttons %}<a class="nav_button" href="/">Palaa etusivulle</a>{% endblock %}
+{% block errors %}{{ super() }}{% endblock %}
+
+{% block form %}
+<div class="options">
+    <form action="/edit_comment/{{ comment.id }}" method="post">
+    <p>
+    <label>Kommentti:</label><br>
+    <textarea name="comment" rows="3" cols="40" maxlength="200" required>{{ comment.content }}</textarea>
+    </p>
+
+    <p>Arvosana 1 - 10</p>
+    {% if comment.rating %}
+    <input type="text" name="grade" value="{{ comment.rating }}" maxlength="3">
+    {% else %}
+    <input type="text" name="grade" maxlength="3">
+    {% endif %}
+    <br><br>
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+    <input type="hidden" name="comment_id" value="{{ comment.id }}">
+    
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+    <input type="submit" value="Tallenna"></input>
+  </form>
+</div>
+{% endblock %}

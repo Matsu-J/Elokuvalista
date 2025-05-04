@@ -62,7 +62,7 @@
 
   {% block content %}
     {% for comment in comments %}
-      <div class="options">
+    <div class="options">
       <h4>{{ comment.username }}
         {% if comment.rating %}
           - ({{ comment.rating }} / 10)
@@ -71,6 +71,10 @@
         
       <p>{{ comment.content }}</p>
       <p>{{ comment.edited_at }}</p>
+      {% if session.user_id == comment.user_id %}
+      <a class="nav_button" href="/edit_comment/{{ comment.id }}">Muokkaa</a>
+      <a class="nav_button" href="/delete_comment/{{ comment.id }}">Poista</a>
+      {% endif %}
     </div>
     {% endfor %}
     

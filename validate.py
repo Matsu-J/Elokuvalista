@@ -72,3 +72,21 @@ def check_comment(comment, grade, post_id):
         abort(404)
         
     return None
+
+
+def check_comment_edit(comment, grade):
+    if len(comment) > 200:
+        return "Kommentti voi olla korkeintaan 200 merkkiä pitkä"
+    
+    if grade != None:
+        try:
+            if "," in grade:
+                grade = grade.replace(",",".")
+            grade = float(grade)
+            if 1 > grade or grade > 10:
+                raise ValueError
+        except:
+            error = "VIRHE: Anna arvosana asteikolla 1-10"
+            return error
+        
+    return None

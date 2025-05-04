@@ -45,12 +45,17 @@ def get_post(post_id):
                         WHERE p.id = ? AND p.user_id = u.id""", [post_id])[0]
 
 def get_comments(post_id):
-    return db.query("""SELECT u.username, c.content, c.rating, c.edited_at
+    return db.query("""SELECT u.username, c.content, c.rating, c.edited_at, c.user_id, c.id
                     FROM users u, comments c
                     WHERE u.id = c.user_id
                     AND c.post_id = ?
                     ORDER BY c.id DESC
                     """, [post_id])
+
+def get_comment(comment_id):
+    return db.query("""SELECT user_id, content, rating, post_id, id
+                    FROM comments
+                    WHERE id = ?""",[comment_id])[0]
 
 def search(query):
     return db.query("""SELECT p.id, p.user_id, p.title, p.release_year, p.movie_hours, p.movie_minutes, p.rating, p.edited_at, u.id, u.username
@@ -69,6 +74,13 @@ def create_post(parameters):
 
 def edit_post(parameters):
     db.execute("UPDATE posts SET title = ?, release_year = ?, movie_hours = ?, movie_minutes = ?, rating = ?, edited_at = ? WHERE id = ?", parameters)
+
+def edit_comment(parameters):
+    db.execute("UPDATE comments SET content = ?, rating = ?, edited_at = ? WHERE id = ?", parameters)
+
+def delete_comment(comment_id):
+    db.execute("DELETE FROM comments WHERE id = ?", [comment_id])
+    
 
 def delete_post(post_id):
     db.execute("DELETE FROM comments WHERE post_id = ?", [post_id])

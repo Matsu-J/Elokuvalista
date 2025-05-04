@@ -1,0 +1,14 @@
+{% extends "form/base.html" %}
+{% block title %}Elokuvalista - Poista kommentti{% endblock %}
+{% block navbuttons %}<a class="nav_button" href="/">Palaa etusivulle</a>{% endblock %}
+{% block greeting %}Poista kommentti{% endblock %}
+{% block form %}
+<div class="options">
+  <form method="post">
+    <h2>Haluatko varmasti poistaa kommentin?</h2>
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+    <input type="submit" name="confirm" value="Poista" />
+    <input type="submit" name="cancel" value="Peruuta"/>
+  </form>
+</div>
+{% endblock %}

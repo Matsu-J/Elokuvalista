@@ -96,7 +96,7 @@ def check_login():
         stats.action("login")
         return redirect("/")
     else:
-        flash("Väärä tunnus tai salasana")
+        flash("Tarkista salasana!")
         return redirect("/login")
 
 
@@ -209,7 +209,7 @@ def add_comment():
     user_id = session["user_id"]
     post_id = request.form["post_id"]
 
-    error = validate.check_comment(comment, grade)
+    error = validate.check_comment(comment, grade, post_id)
     if error == None:
         if grade:
             if "," in grade:

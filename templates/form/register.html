@@ -6,18 +6,14 @@
 {% block form %}
 <div class="options">
   <form action="/create_user" method="post">
-    <p>
-      Käyttäjätunnus: <br>
-      <input type="text" name="username" required>
-    </p>
-    <p>
-      Salasana: <br>
-      <input type="password" name="password">
-    </p>
-    <p>
-      Vahvista salasana: <br>
-      <input type="password" name="password_confirm">
-    </p>
+    <label for="username">Käyttäjätunnus:</label><br>
+    <input type="text" name="username" required>
+    <br><br>
+    <label for="password">Salasana:</label><br>
+    <input type="password" name="password">
+    <br><br>
+    <label for="password_confirm">Salasana:</label><br>
+    <input type="password" name="password_confirm"><br><br>
     <input type="submit" value="Rekisteröidy">
   </form>
 </div>

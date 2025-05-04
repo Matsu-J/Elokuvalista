@@ -1,3 +1,6 @@
+import feed
+from flask import abort
+
 def check_post_parameters(title, year, hours, minutes, grade):
     error = None
     print(title, year, hours, minutes, grade)
@@ -48,7 +51,7 @@ def check_post_parameters(title, year, hours, minutes, grade):
     return error
 
 
-def check_comment(comment, grade):
+def check_comment(comment, grade, post_id):
     if len(comment) > 200:
         return "Kommentti voi olla korkeintaan 200 merkkiä pitkä"
     
@@ -62,5 +65,10 @@ def check_comment(comment, grade):
         except:
             error = "VIRHE: Anna arvosana asteikolla 1-10"
             return error
+    
+    try:
+        feed.get_post(post_id)
+    except:
+        abort(404)
         
     return None

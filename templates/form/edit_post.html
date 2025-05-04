@@ -7,17 +7,17 @@
 {% block form %}
 <div class="options">
   <form action="/edit_post/{{ post.id }}" method="post">
-    <p>Elokuvan nimi:</p>
-    <input type="text" value="{{ post.title }}" name="title" maxlength="60" required>
+    <label for="title">Elokuvan nimi</label><br>
+    <input type="text" value="{{ post.title }}" name="title" maxlength="60" required><br><br>
 
-    <p>Julkaisuvuosi</p>
+    <label for="release_year">Julkaisuvuosi</label><br>
     {% if post.release_year != None %}
     <input type="text" value="{{ post.release_year }}" maxlength="4" name="release_year">
     {% else %}
     <input type="text" maxlength="4" name="release_year">
-    {% endif %}
+    {% endif %}<br><br>
 
-    <p>Elokuvan pituus</p>
+    <label for="hours">Elokuvan pituus</label><br>
     {% if post.movie_hours != None %}
     <input type="text" value="{{ post.movie_hours }}" name="hours" maxlength="2" placeholder="tuntia"><br>
     {% else %}
@@ -27,9 +27,9 @@
     <input type="text" value="{{ post.movie_minutes }}" name="minutes" maxlength="2" placeholder="minuuttia">
     {% else %}
     <input type="text" name="minutes" maxlength="2" placeholder="minuuttia">
-    {% endif %}
+    {% endif %}<br><br>
 
-    <p>Arvosana 1 - 10</p>
+    <label for="grade">Arvosana 1 - 10</label><br>
     <input type="text" name="grade" maxlength="3">
 
     <br><br>

@@ -9,17 +9,17 @@
 {% block form %}
 <div class="options">
   <form action="/create_post" method="post">
-    <p>Elokuvan nimi:</p>
-    <input type="text" name="title" maxlength="60" required>
+    <label for="title">Elokuvan nimi</label><br>
+    <input type="text" name="title" maxlength="60" required><br><br>
 
-    <p>Julkaisuvuosi</p>
-    <input type="text" name="release_year" maxlength="4">
+    <label for="release_year">Julkaisuvuosi</label><br>
+    <input type="text" name="release_year" maxlength="4"><br><br>
 
-    <p>Elokuvan pituus</p>
+    <label for="hours">Elokuvan pituus</label><br>
     <input type="text" name="hours" placeholder="tuntia" maxlength="2"><br>
-    <input type="text" name="minutes" placeholder="minuuttia" maxlength="2"><br>
+    <input type="text" name="minutes" placeholder="minuuttia" maxlength="2"><br><br>
 
-    <p>Arvosana 1 - 10</p>
+    <label for="grade">Arvosana 1 - 10</label><br>
     <input type="text" name="grade" maxlength="3">
 
     <br><br>

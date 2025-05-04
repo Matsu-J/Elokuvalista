@@ -1,34 +1,21 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>{% block title %}{% endblock %}</title>
-    </head>
+{% extends "layout.html" %}
+  {% block site_content %}
+    <div>
+      {% block errors %}
+      {% for message in get_flashed_messages() %}
+      <p>
+        <b>{{ message }}</b>
+      </p>
+      <hr>
+      {% endfor %}
+      {% endblock %}
+    </div>
 
-    <body>
-      <div>
-        <h1>Elokuvalista</h1>
-        <hr>
-      </div>
+    <div>
+      {% block description%}{% endblock %}
+    </div>
 
-      <div>
-        {% block errors %}
-        {% for message in get_flashed_messages() %}
-        <p>
-          <b>{{ message }}</b>
-        </p>
-        <hr>
-        {% endfor %}
-        {% endblock %}
-      </div>
-
-      <div>
-        {% block description%}{% endblock %}
-      </div>
-
-      <div>
-        {% block content %}{% endblock %}
-      </div>
-
-  </body>
-</html>
+    <div>
+      {% block content %}{% endblock %}
+    </div>
+  {% endblock %}

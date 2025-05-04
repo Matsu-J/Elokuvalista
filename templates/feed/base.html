@@ -1,22 +1,17 @@
-<!DOCTYPE html>
-<html lang="fi">
-  <head>
-    <meta charset="utf-8">
-    <title>{% block title %}{% endblock %}</title>
-  </head>
+{% extends "layout.html" %}
 
-  <body>
-    <div>
-        <h1>Elokuvalista</h1><hr>
+  {% block title %}Elokuvalista - Etusivu{% endblock %}
 
-        {% block messages %}
+  {% block site_content %}
+    <body>
+      {% block messages %}
         {% for message in get_flashed_messages() %}
         <p>
             <b>{{ message }}</b>
         </p>
         <hr>
         {% endfor %}
-        {% endblock %}
+      {% endblock %}
 
         {% if session.username %}
         <h2>
@@ -41,45 +36,44 @@
         
         <a href="/register">
           <button>Rekisteröidy tästä</button></a>
-        <br>
+        <br><br>
         {% endif %}
-
       {% block options %}
-      {% endblock %}
-      <hr>
-      <br>
-    </div>
+    {% endblock %}
 
-    <div>
-      {% block posts %}
+
+    {% block posts %}
       {% for post in posts %}
-      <a href="/user/{{ post.user_id }}">{{ post.username }}</a>
-      <a> - </a>
-      <a href="/post/{{ post.id }}">
-        {{ post.title }}
-      </a>
-      {% if post.release_year %}
-      <p>Julkaisuvuosi: {{ post.release_year }}</p>
-      {% endif %}
-    <p>
-      </p>
-        {% if post.movie_hours %}
-        <p>Kesto: {{ post.movie_hours }} tuntia {{ post.movie_minutes }} minuuttia</p>
-        {% endif %}
-      <p>
-        {% if post.rating %}
-        <p>Käyttäjän arvio: {{ post.rating }} / 10</p>
-        {% endif %}
-        ({{ post.edited_at }})
-      </p>
+        <div class="post">
+          <br>
+          <a href="/user/{{ post.user_id }}">{{ post.username }}</a>
+          <a> - </a>
+          <a href="/post/{{ post.id }}">
+            {{ post.title }}
+          </a>
+          {% if post.release_year %}
+          <p>Julkaisuvuosi: {{ post.release_year }}</p>
+          {% endif %}
+        <p>
+          </p>
+            {% if post.movie_hours %}
+            <p>Kesto: {{ post.movie_hours }} tuntia {{ post.movie_minutes }} minuuttia</p>
+            {% endif %}
+          <p>
+            {% if post.rating %}
+            <p>Käyttäjän arvio: {{ post.rating }} / 10</p>
+            {% endif %}
+            ({{ post.edited_at }})
+          </p>
+        </div>
         <br>
       {% endfor %}
-      {% endblock %}
-    </div>
+    {% endblock %}
+      
 
     <div>
       {% block pages %}
       {% endblock %}
     </div>
   </body>
-</html>
+  {% endblock %}

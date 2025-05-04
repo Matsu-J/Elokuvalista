@@ -165,7 +165,7 @@ def create_post():
         return redirect("/add_movie")
 
     
-    edited_at = datetime.now()
+    edited_at = datetime.now().isoformat(" ", "minutes")
     user_id = users.get_user_id(session["username"])
 
     try:
@@ -204,7 +204,7 @@ def add_comment():
 
     error = validate.check_comment(comment, grade)
     if error == None:
-        edited_at = datetime.now()
+        edited_at = datetime.now().isoformat(" ", "minutes")
         feed.add_comment(post_id, user_id, comment, grade, edited_at)
         stats.action("comment")
         flash("Kommentti lisätty!")
@@ -258,7 +258,7 @@ def edit_post(post_id):
                 return redirect(f"/edit_post/{post_id}")
                 
     
-            edited_at = datetime.now()
+            edited_at = datetime.now().isoformat(" ", "minutes")
 
             try:
                 feed.edit_post([title, year, hours, minutes, grade, edited_at, post_id])
@@ -293,7 +293,7 @@ def delete_post(post_id):
 
 
 @app.route("/sorted", methods=["POST"])
-def sorted_by_year():
+def sorted():
     greeting = greet.random_greeting()
     try:
         sort_by = request.form["sort"]

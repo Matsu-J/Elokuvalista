@@ -55,9 +55,8 @@ def create_user():
 
     if password != confirmed_password:
         flash("Salasanat eivät täsmää!")
-        return redirect("/create_user")
+        return redirect("/register")
         
-    
     hashed_password = generate_password_hash(password)
 
     try:

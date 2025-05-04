@@ -5,7 +5,7 @@
 {% block messages %}{{ super () }}{% endblock %}
 
 {% block options %}
-  <div>
+  <div class="options">
     <div>
       <form action="/search" method="get">
         <p>Hae elokuvia</p>
@@ -14,9 +14,7 @@
       </form>
 
       <p>Lajiteltu: {{ sorted_by }}</p>
-      <a href="/">
-        <button>Palaa etusivulle</button></a><br><br>
-      
+
       <form action="/sorted" method="post">
         <input type="radio" name="sort" value="1" /> Vanhin ensin
         <input type="radio" name="sort" value="2" /> Uusin ensin
@@ -24,7 +22,8 @@
         <input type="radio" name="sort" value="4" /> Lyhyin ensin
         <br><br>
         <input type="submit" value="Lajittele">
-      </form>
+      </form><br>
+      <a href="/"><button>Palaa etusivulle</button></a>
       </div>
   </div>
 {% endblock %}

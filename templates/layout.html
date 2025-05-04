@@ -6,8 +6,9 @@
     <title>{% block title %}{% endblock %}</title>
   </head>
   <body>
-    <div>
-      <h1>Elokuvalista</h1><hr>
+    <div class="navbar">
+      <h1 style="color: rgb(255, 255, 255);">Elokuvalista - {% block greeting %}{% endblock %}</h1>
+      {% block navbuttons %}{% endblock %}
     </div>
     {% block site_content %}
     {% endblock %}

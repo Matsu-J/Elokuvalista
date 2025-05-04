@@ -1,13 +1,10 @@
 {% extends "feed/base.html" %}
 
-{% block title %}
-  Elokuvalista - Tulokset haulle {{ query }}
-{%endblock%}
-
+{% block title %}Elokuvalista - Tulokset haulle {{ query }}{%endblock%}
 {% block messages %}{{ super () }}{% endblock %}
 
 {% block options %}
-  <div>
+  <div class="options">
     <h3>Tulokset haulle {{ query }}</h3>
     <form action="/search" method="get">
       <p>Hae elokuvia</p>

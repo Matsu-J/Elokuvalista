@@ -1,8 +1,10 @@
 {% extends "form/base.html" %}
 {% block title %}Elokuvalista - Rekisteröidy{% endblock %}
-{% block description %}Luo uusi käyttäjä{% endblock %}
+{% block greeting %}Luo uusi käyttäjä{% endblock %}
+{% block navbuttons %}<a class="nav_button" href="/">Palaa etusivulle</a>{% endblock %}
 {% block errors %}{{ super() }}{% endblock %}
 {% block form %}
+<div class="options">
   <form action="/create_user" method="post">
     <p>
       Käyttäjätunnus: <br>
@@ -18,4 +20,5 @@
     </p>
     <input type="submit" value="Rekisteröidy">
   </form>
+</div>
 {% endblock %}

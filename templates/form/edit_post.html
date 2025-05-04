@@ -1,8 +1,10 @@
 {% extends "form/base.html" %}
 {% block title %}Elokuvalista - Muokkaa{% endblock %}
-{% block description %}Muokkaa elokuvaa{% endblock %}
+{% block greeting %}Muokkaa elokuvaa{% endblock %}
+{% block navbuttons %}<a class="nav_button" href="/">Palaa etusivulle</a>{% endblock %}
 {% block errors %}{{ super() }}{% endblock %}
 {% block form %}
+<div class="options">
   <form action="/edit_post/{{ post.id }}" method="post">
     <p>Elokuvan nimi:</p>
     <input type="text" value="{{ post.title }}" name="title" maxlength="30" required>
@@ -33,4 +35,5 @@
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <input type="submit" value="Tallenna"></input>
   </form>
+</div>
 {% endblock %}

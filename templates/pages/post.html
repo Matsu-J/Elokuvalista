@@ -2,9 +2,14 @@
 
   {% block title %}Elokuvalista - {{ post.title }}{% endblock %}
 
+  {% block greeting %}{{ post.title }}{% endblock %}
+
+  {% block navbuttons %}<a class="nav_button" href="/">Palaa etusivulle</a>{% endblock %}
+
   {% block errors %}{{ super() }}{% endblock %}
 
   {% block description %}
+  <div class="options">
     <h2>{{ post.title }}</h2>
 
     {% if post.release_year %}
@@ -21,17 +26,14 @@
     
     <p>Lisännyt: {{ post.username }}</p>
     
-    <a href="/">
-      <button>Palaa etusivulle</button></a>
     {% if session.user_id == post.user_id%}
-    <a href="/edit_post/{{ post.id }}">
-      <button>Muokkaa</button></a>
-    <a href="/delete_post/{{ post.id }}">
-      <button>Poista</button></a>
+    <a class="nav_button" href="/edit_post/{{ post.id }}">Muokkaa</a>
+    <a class="nav_button" href="/delete_post/{{ post.id }}">Poista</a>
     {% endif %}
-    
-    <hr>
+  </div>
+  
     {% if session.username %}
+    <div class="options">
     <form action="/add_comment" method="post">
       <p>
         <label>Kommentti:</label><br>
@@ -45,31 +47,31 @@
       <input type="hidden" name="post_id" value="{{ post.id }}">
       <input type="submit" value="Kommentoi">
     </form>
+    </div>
 
     </form>
     {% else %}
-    <p>Kirjaudu sisään tai rekisteröidy, jotta voit kommentoida</p>
-    <a href="/login">
-      <button>Kirjaudu sisään</button></a>
-    
-    <a href="/register">
-      <button>Rekisteröidy</button></a>
+    <div class="options">
+      <p>Kirjaudu sisään tai rekisteröidy, jotta voit kommentoida</p>
+      <a class="nav_button" href="/login">Kirjaudu sisään</a>
+      <a class="nav_button" href="/register">Rekisteröidy</a>
+    </div>
     {% endif %}
-    <hr>
+
   {% endblock %}
 
   {% block content %}
-    <div>
-        {% for comment in comments %}
-        <h4>{{ comment.username }}
-          {% if comment.rating %}
-            - ({{ comment.rating }} / 10)
-          {% endif %}
-        </h4>
-          
-        <p>{{ comment.content }}</p>
-        <p>{{ comment.edited_at }}</p>
-        <br>
-        {% endfor %}
+    {% for comment in comments %}
+      <div class="options">
+      <h4>{{ comment.username }}
+        {% if comment.rating %}
+          - ({{ comment.rating }} / 10)
+        {% endif %}
+      </h4>
+        
+      <p>{{ comment.content }}</p>
+      <p>{{ comment.edited_at }}</p>
     </div>
-    {% endblock %}
+    {% endfor %}
+    
+  {% endblock %}

@@ -1,12 +1,13 @@
 {% extends "form/base.html" %}
 
 {% block title %}Elokuvalista - Lisää elokuva{% endblock %}
-
-{% block description %}Lisää elokuva listalle{% endblock %}
+{% block navbuttons %}<a class="nav_button" href="/">Palaa etusivulle</a>{% endblock %}
+{% block greeting %}Lisää elokuva listalle{% endblock %}
 
 {% block errors %}{{ super() }}{% endblock %}
 
 {% block form %}
+<div class="options">
   <form action="/create_post" method="post">
     <p>Elokuvan nimi:</p>
     <input type="text" name="title" maxlength="30" required>
@@ -25,4 +26,5 @@
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <input type="submit" value="Lisää"></input>
   </form>
+</div>
 {% endblock %}

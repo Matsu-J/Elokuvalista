@@ -2,71 +2,57 @@
 
   {% block title %}Elokuvalista - Etusivu{% endblock %}
 
-  {% block site_content %}
-    <body>
-      {% block messages %}
-        {% for message in get_flashed_messages() %}
-        <p>
-            <b>{{ message }}</b>
-        </p>
-        <hr>
-        {% endfor %}
-      {% endblock %}
+  {% block greeting %}{{ greeting }}{% endblock %}
 
-        {% if session.username %}
-        <h2>
-          {{ greeting }}
-        </h2>
-        <a href="/add_movie">
-          <button>Lisää elokuva listalle</button></a>
-      
-        <a href="/user/{{ session.user_id }}">
-          <button>Oma profiili</button></a>
-      
-        <a href="/logout">
-          <button>Kirjaudu ulos</button></a>
-        <br>
-      
-        {% else %}
-        <h2>
-          Kirjaudu sisään tai rekisteröidy lisätäksesi elokuvia listalle
-        </h2>
-        <a href="/login">
-          <button>Kirjaudu sisään</button></a>
-        
-        <a href="/register">
-          <button>Rekisteröidy tästä</button></a>
-        <br><br>
-        {% endif %}
-      {% block options %}
+  {% block navbuttons %}
+    {% if session.username %}
+      <a class="nav_button" href="/add_movie">Lisää elokuva listalle</a>
+      <a class="nav_button" href="/user/{{ session.user_id }}">Oma profiili</a>
+      <a class="nav_button" href="/logout">Kirjaudu ulos</a>
+    {% else %}
+      <a class="nav_button" href="/login">Kirjaudu sisään</a>
+      <a class="nav_button" href="/register">Rekisteröidy tästä</a>
+    {% endif %}
+  {% endblock %}
+
+  {% block site_content %}
+  <div class="content">
+  
+    {% block messages %}
+      {% for message in get_flashed_messages() %}
+      <div class="message">
+        <p><b>{{ message }}</b></p>
+      </div>
+      {% endfor %}
+    {% endblock %}
+
+
+    {% block options %}
     {% endblock %}
 
 
     {% block posts %}
       {% for post in posts %}
         <div class="post">
-          <br>
-          <a href="/user/{{ post.user_id }}">{{ post.username }}</a>
-          <a> - </a>
-          <a href="/post/{{ post.id }}">
-            {{ post.title }}
-          </a>
+          <div class="statusbar">
+            <a class="nav_button" href="/user/{{ post.user_id }}">{{ post.username }}</a>
+            <a> - </a>
+            <a class="nav_button" href="/post/{{ post.id }}">{{ post.title }}</a>
+          </div>
+          
           {% if post.release_year %}
-          <p>Julkaisuvuosi: {{ post.release_year }}</p>
+            <p class="post_text">Julkaisuvuosi: {{ post.release_year }}</p>
           {% endif %}
-        <p>
-          </p>
-            {% if post.movie_hours %}
-            <p>Kesto: {{ post.movie_hours }} tuntia {{ post.movie_minutes }} minuuttia</p>
-            {% endif %}
-          <p>
-            {% if post.rating %}
-            <p>Käyttäjän arvio: {{ post.rating }} / 10</p>
-            {% endif %}
-            ({{ post.edited_at }})
-          </p>
+
+          {% if post.movie_hours %}
+            <p class="post_text">Kesto: {{ post.movie_hours }} tuntia {{ post.movie_minutes }} minuuttia</p>
+          {% endif %}
+
+          {% if post.rating %}
+            <p class="post_text">Käyttäjän arvio: {{ post.rating }} / 10</p>
+          {% endif %}
+          <p class="post_text">({{ post.edited_at }})</p>
         </div>
-        <br>
       {% endfor %}
     {% endblock %}
       
@@ -75,5 +61,5 @@
       {% block pages %}
       {% endblock %}
     </div>
-  </body>
+  </div>
   {% endblock %}

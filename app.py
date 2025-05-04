@@ -8,6 +8,9 @@ import math, secrets, feed, users, validate, greet, stats, config
 app = Flask(__name__)
 app.secret_key = config.secret_key()
 
+################################
+#Functions for showing the feed#
+################################
 
 @app.route("/")
 @app.route("/<int:page>")
@@ -49,7 +52,10 @@ def sorted():
         if sort_by == "4":
             sorted_by = "Lyhyin ensin"
             posts = feed.shortest_first()
-        return render_template("feed/sorted.html", posts=posts, sorted_by=sorted_by, greeting=greeting)
+        return render_template("feed/sorted.html", 
+                               posts=posts, 
+                               sorted_by=sorted_by, 
+                               greeting=greeting)
     except:
         return redirect("/")
 
@@ -59,13 +65,16 @@ def search():
     query = request.args.get("query")
     results = feed.search(query)
     greeting = greet.random_greeting()
-    return render_template("feed/search.html", posts=results, query=query, greeting=greeting)
+    return render_template("feed/search.html", 
+                           posts=results, 
+                           query=query, 
+                           greeting=greeting)
 
 
 
-
-
-
+###############################
+#Functions related to accounts#
+###############################
 
 
 
@@ -89,6 +98,10 @@ def create_user():
     username = request.form["username"]
     password = request.form["password"]
     confirmed_password = request.form["password_confirm"]
+
+    if len(username) > 30:
+        flash("Käyttäjänimi voi olla korkeintaan 30 merkkiä pitkä!")
+        return redirect("/register")
 
     if password != confirmed_password:
         flash("Salasanat eivät täsmää!")
@@ -165,11 +178,9 @@ def user_page(user_id):
                            posts=posts)
 
 
-
-
-
-
-
+###########################
+#Funtions related to posts#
+###########################
 
 
 @app.route("/add_movie")
@@ -234,7 +245,9 @@ def show_post(post_id):
     try:
         post = feed.get_post(post_id)
         comments = feed.get_comments(post_id)
-        return render_template("pages/post.html", post=post, comments=comments)
+        return render_template("pages/post.html", 
+                               post=post, 
+                               comments=comments)
     except:
         abort(404)
 
@@ -285,6 +298,7 @@ def edit_comment(comment_id):
             return render_template("form/edit_comment.html", comment=comment)
         
         if request.method == "POST":
+            require_login()
             check_csrf()
             content = request.form["comment"]
             grade = None
@@ -326,6 +340,7 @@ def delete_comment(comment_id):
         if request.method == "GET":
             return render_template("form/delete_comment.html", comment=comment)
         if request.method == "POST":
+            require_login()
             check_csrf() 
             if "confirm" in request.form:
                 feed.delete_comment(comment_id)
@@ -349,6 +364,7 @@ def edit_post(post_id):
             return render_template("form/edit_post.html", post=post)
         
         if request.method == "POST":
+            require_login()
             check_csrf()
             title = request.form["title"]
 
@@ -410,6 +426,7 @@ def delete_post(post_id):
         if request.method == "GET":
             return render_template("form/delete_post.html", post=post)
         if request.method == "POST":
+            require_login()
             check_csrf() 
             if "confirm" in request.form:
                 feed.delete_post(post_id)

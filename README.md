@@ -1,6 +1,8 @@
 # Elokuvalista
+![preview](preview.png)
 
-Sovelluksen idea on olla lista, johon käyttäjät voivat lisätä elokuvia joita he ovat katsoneet tai haluavat katsoa. Käyttäjät voivat arvostella elokuvat ateikolla 0-10. Lisäksi elokvat voi järjestää muun muassa aakkosjärjestyksessä, pituuden, julkaisuvuoden tai arvosanan mukaisessa järjestyksessä.
+
+Sovelluksen idea on olla lista, johon käyttäjät voivat lisätä elokuvia joita he ovat katsoneet tai haluavat katsoa. Käyttäjät voivat arvostella elokuvat ateikolla 0-10. Lisäksi elokvat voi järjestää muun muassa,pituuden tai julkaisuvuoden mukaisessa järjestyksessä.
 
 ## Sovelluksen toimintojen tilanne:
 
@@ -13,12 +15,6 @@ Sovelluksen idea on olla lista, johon käyttäjät voivat lisätä elokuvia joit
   ✅ Käyttäjä voi lajitella elokuvat julkaisuvuoden mukaan
 
   ✅ Käyttäjä voi lajitella elokuvat pituuden mukaan
-
-  ❌ Käyttäjä voi merkitä elokuvan katsotuksi
-  
-  ❌ Käyttäjä voi lajitella elokuvat katsottuihin ja ei katsottuihin
-  
-  ❌ Käyttäjä voi lajitella elokuvat arvosanan mukaan
   
   ✅ Käyttäjä voi arvostella elokuvia
   

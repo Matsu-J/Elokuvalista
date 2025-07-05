@@ -1,20 +1,15 @@
 {% extends "layout.html" %}
   {% block site_content %}
-    
-  {% block errors %}
-    {% for message in get_flashed_messages() %}
-    <div class="message">
-      <p><b>{{ message }}</b></p>
-    </div>
-    {% endfor %}
-  {% endblock %}
-    
 
-    <div>
-      {% block description%}{% endblock %}
-    </div>
+    {% block errors %}
+      {% for message in get_flashed_messages() %}
+      <div class="message">
+        <p><b>{{ message }}</b></p>
+      </div>
+      {% endfor %}
+    {% endblock %}
+    
+        {% block description%}{% endblock %}
+        {% block content %}{% endblock %}
 
-    <div>
-      {% block content %}{% endblock %}
-    </div>
   {% endblock %}

@@ -8,74 +8,76 @@
 
   {% block errors %}{{ super() }}{% endblock %}
 
-  {% block description %}
-  <div class="options">
-    <h2>{{ post.title }}</h2>
-
-    {% if post.release_year %}
-    <p>Julkaisuvuosi: {{ post.release_year }}</p>
-    {% endif %}
-
-    {% if post.movie_hours %}
-    <p>Kesto: {{ post.movie_hours }} tuntia {{ post.movie_minutes }} minuuttia</p>
-    {% endif %}
-
-    {% if post.rating %}
-    <p>Käyttäjän arvio: {{ post.rating }} / 10</p>
-    {% endif %}
-    
-    <p>Lisännyt: {{ post.username }}</p>
-    
-    {% if session.user_id == post.user_id%}
-    <a class="nav_button" href="/edit_post/{{ post.id }}">Muokkaa</a>
-    <a class="nav_button" href="/delete_post/{{ post.id }}">Poista</a>
-    {% endif %}
-  </div>
-  
-    {% if session.username %}
+  {% block site_content %}
+    {% block description %}
     <div class="options">
-    <form action="/add_comment" method="post">
-      <p>
-        <label>Kommentti:</label><br>
-        <textarea name="comment" rows="3" cols="40" maxlength="200" required></textarea>
-      </p>
+      <h2>{{ post.title }}</h2>
 
-      <p>Arvosana 1 - 10</p>
-      <input type="text" name="grade" maxlength="3">
-      <br><br>
-      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-      <input type="hidden" name="post_id" value="{{ post.id }}">
-      <input type="submit" value="Kommentoi">
-    </form>
-    </div>
+      {% if post.release_year %}
+      <p>Julkaisuvuosi: {{ post.release_year }}</p>
+      {% endif %}
 
-    </form>
-    {% else %}
-    <div class="options">
-      <p>Kirjaudu sisään tai rekisteröidy, jotta voit kommentoida</p>
-      <a class="nav_button" href="/login">Kirjaudu sisään</a>
-      <a class="nav_button" href="/register">Rekisteröidy</a>
-    </div>
-    {% endif %}
+      {% if post.movie_hours %}
+      <p>Kesto: {{ post.movie_hours }} tuntia {{ post.movie_minutes }} minuuttia</p>
+      {% endif %}
 
-  {% endblock %}
-
-  {% block content %}
-    {% for comment in comments %}
-    <div class="options">
-      <h4>{{ comment.username }}
-        {% if comment.rating %}
-          - ({{ comment.rating }} / 10)
-        {% endif %}
-      </h4>
-        
-      <p>{{ comment.content }}</p>
-      <p>{{ comment.edited_at }}</p>
-      {% if session.user_id == comment.user_id %}
-      <a class="nav_button" href="/edit_comment/{{ comment.id }}">Muokkaa</a>
-      <a class="nav_button" href="/delete_comment/{{ comment.id }}">Poista</a>
+      {% if post.rating %}
+      <p>Käyttäjän arvio: {{ post.rating }} / 10</p>
+      {% endif %}
+      
+      <p>Lisännyt: {{ post.username }}</p>
+      
+      {% if session.user_id == post.user_id%}
+      <a class="nav_button" href="/edit_post/{{ post.id }}">Muokkaa</a>
+      <a class="nav_button" href="/delete_post/{{ post.id }}">Poista</a>
       {% endif %}
     </div>
-    {% endfor %}
     
+      {% if session.username %}
+      <div class="options">
+      <form action="/add_comment" method="post">
+        <p>
+          <label>Kommentti:</label><br>
+          <textarea name="comment" rows="3" cols="40" maxlength="200" required></textarea>
+        </p>
+
+        <p>Arvosana 1 - 10</p>
+        <input type="text" name="grade" maxlength="3">
+        <br><br>
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+        <input type="hidden" name="post_id" value="{{ post.id }}">
+        <input type="submit" value="Kommentoi">
+      </form>
+      </div>
+
+      </form>
+      {% else %}
+      <div class="options">
+        <p>Kirjaudu sisään tai rekisteröidy, jotta voit kommentoida</p>
+        <a class="nav_button" href="/login">Kirjaudu sisään</a>
+        <a class="nav_button" href="/register">Rekisteröidy</a>
+      </div>
+      {% endif %}
+
+    {% endblock %}
+
+    {% block content %}
+      {% for comment in comments %}
+      <div class="options">
+        <h4>{{ comment.username }}
+          {% if comment.rating %}
+            - ({{ comment.rating }} / 10)
+          {% endif %}
+        </h4>
+          
+        <p>{{ comment.content }}</p>
+        <p>{{ comment.edited_at }}</p>
+        {% if session.user_id == comment.user_id %}
+        <a class="nav_button" href="/edit_comment/{{ comment.id }}">Muokkaa</a>
+        <a class="nav_button" href="/delete_comment/{{ comment.id }}">Poista</a>
+        {% endif %}
+      </div>
+      {% endfor %}
+      
+    {% endblock %}
   {% endblock %}

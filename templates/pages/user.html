@@ -10,16 +10,36 @@
     <h1>{{ username }}</h1>
 
     {% if session.user_id == user_id %}
-    <p>Olet lisännyt listallesi {{ count_all }} elokuvaa</p>
-    <p>Olet arvostellut {{ count_ratings }} elokuvaa</p>
-    <p>Arvostelujen keskiarvo {{ average }}</p>
+
+      {% if count_all == 1 %}
+        <p>Olet lisännyt listallesi {{ count_all }} elokuvan</p>
+      {% else %}
+        <p>Olet lisännyt listallesi {{ count_all }} elokuvan</p>
+      {% endif %}
+
+      {% if count_ratings == 1 %}
+        <p>Olet arvostellut {{ count_ratings }} elokuvan</p>
+      {% else %}
+        <p>Olet arvostellut {{ count_ratings }} elokuvaa</p>
+      {% endif %}
+      <p>Arvostelujesi keskiarvo {{ average }}</p>
     {% endif %}
 
     {% if session.user_id != user_id %}
-    <p>Käyttäjä on lisännyt listalleen {{ count_all }} elokuvaa</p>
-    <p>Käyttäjä on arvostellut {{ count_ratings }} elokuvaa</p>
-    <p>Arvostelujen keskiarvo {{ average }}</p>
+      {% if count_all == 1 %}
+          <p>Käyttäjä on lisännyt listalleen {{ count_all }} elokuvan</p>
+        {% else %}
+          <p>Käyttäjä on lisännyt listalleen {{ count_all }} elokuvan</p>
+        {% endif %}
+
+        {% if count_ratings == 1 %}
+          <p>Käyttäjä on arvostellut {{ count_ratings }} elokuvan</p>
+        {% else %}
+          <p>Käyttäjä on arvostellut {{ count_ratings }} elokuvaa</p>
+        {% endif %}
+        <p>Arvostelujen keskiarvo {{ average }}</p>
     {% endif %}
+    
   </div>
   {% endblock %}
 

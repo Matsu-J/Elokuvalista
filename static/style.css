@@ -98,3 +98,44 @@ a.nav_button:hover{
     border-right: 3px solid white;
     border-bottom: 3px solid white;
 }
+
+input.button{
+    color: black;
+    text-decoration: none;
+    padding: 0.3em;
+    background-color: #c0c0c0;
+    border-top: 3px solid white;
+    border-left: 3px solid white;
+    border-right: 3px solid black;
+    border-bottom: 3px solid black;
+}
+
+input.button:hover{
+    text-decoration: none;
+    padding: 4px;
+    background-color: #c0c0c0;
+    border-top: 3px solid black;
+    border-left: 3px solid black;
+    border-right: 3px solid white;
+    border-bottom: 3px solid white;
+}
+
+input.field{
+    text-decoration: none;
+    padding: 5px;
+    background-color: #d6d6d6;
+    border-top: 3px solid black;
+    border-left: 3px solid black;
+    border-right: 3px solid white;
+    border-bottom: 3px solid white;
+}
+
+textarea.field{
+    text-decoration: none;
+    padding: 5px;
+    background-color: #d6d6d6;
+    border-top: 3px solid black;
+    border-left: 3px solid black;
+    border-right: 3px solid white;
+    border-bottom: 3px solid white;
+}

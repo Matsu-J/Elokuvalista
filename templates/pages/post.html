@@ -25,9 +25,10 @@
       <p>Käyttäjän arvio: {{ post.rating }} / 10</p>
       {% endif %}
       
-      <p>Lisännyt: {{ post.username }}</p>
+      <p>Lisännyt: <a class="nav_button" href="/user/{{ post.user_id }}">{{ post.username }}</a></p>
       
       {% if session.user_id == post.user_id%}
+      <br>
       <a class="nav_button" href="/edit_post/{{ post.id }}">Muokkaa</a>
       <a class="nav_button" href="/delete_post/{{ post.id }}">Poista</a>
       {% endif %}
@@ -37,23 +38,23 @@
       <div class="options">
       <form action="/add_comment" method="post">
         <p>
-          <label>Kommentti:</label><br>
-          <textarea name="comment" rows="3" cols="40" maxlength="200" required></textarea>
+          <label for="comment">Kommentti:</label><br><br>
+          <textarea class="field" name="comment" rows="3" cols="40" maxlength="200" required></textarea>
         </p>
 
-        <p>Arvosana 1 - 10</p>
-        <input type="text" name="grade" maxlength="3">
+        <label for="grade">Arvosana 1 - 10</label><br><br>
+        <input class="field" type="text" name="grade" maxlength="3">
         <br><br>
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
         <input type="hidden" name="post_id" value="{{ post.id }}">
-        <input type="submit" value="Kommentoi">
+        <input class="button" type="submit" value="Kommentoi">
       </form>
       </div>
 
       </form>
       {% else %}
       <div class="options">
-        <p>Kirjaudu sisään tai rekisteröidy, jotta voit kommentoida</p>
+        <p style="margin-top: 0px;">Kirjaudu sisään tai rekisteröidy, jotta voit kommentoida</p>
         <a class="nav_button" href="/login">Kirjaudu sisään</a>
         <a class="nav_button" href="/register">Rekisteröidy</a>
       </div>
@@ -64,11 +65,11 @@
     {% block content %}
       {% for comment in comments %}
       <div class="options">
-        <h4>{{ comment.username }}
+        <a class="nav_button" href="/user/{{ comment.user_id }}">{{ post.username }}</a>
           {% if comment.rating %}
             - ({{ comment.rating }} / 10)
           {% endif %}
-        </h4>
+        
           
         <p>{{ comment.content }}</p>
         <p>{{ comment.edited_at }}</p>

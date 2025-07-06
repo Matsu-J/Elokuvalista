@@ -6,11 +6,11 @@
 {% block form %}
 <div class="options">
   <form action="/check_login" method="post">
-    <label for="username">Käyttäjätunnus:</label><br>
-    <input type="text" name="username" maxlength="30" required><br><br>
-    <label for="password">Salasana:</label><br>
-    <input type="password" name="password"><br><br>
-    <input type="submit" value="Kirjaudu">
+    <label for="username">Käyttäjätunnus:</label><br><br>
+    <input class="field" type="text" name="username" maxlength="30" required><br><br>
+    <label for="password">Salasana:</label><br><br>
+    <input class="field" type="password" name="password"><br><br>
+    <input class="button" type="submit" value="Kirjaudu">
   </form>
 </div>
 {% endblock %}

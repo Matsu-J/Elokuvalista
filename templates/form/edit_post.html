@@ -8,33 +8,36 @@
 <div class="options">
   <form action="/edit_post/{{ post.id }}" method="post">
     <label for="title">Elokuvan nimi</label><br>
-    <input type="text" value="{{ post.title }}" name="title" maxlength="60" required><br><br>
+    <input class="field" type="text" value="{{ post.title }}" name="title" maxlength="60" required><br><br>
 
     <label for="release_year">Julkaisuvuosi</label><br>
     {% if post.release_year != None %}
-    <input type="text" value="{{ post.release_year }}" maxlength="4" name="release_year">
+    <input class="field" type="text" value="{{ post.release_year }}" maxlength="4" name="release_year">
     {% else %}
-    <input type="text" maxlength="4" name="release_year">
+    <input class="field" type="text" maxlength="4" name="release_year">
     {% endif %}<br><br>
 
     <label for="hours">Elokuvan pituus</label><br>
     {% if post.movie_hours != None %}
-    <input type="text" value="{{ post.movie_hours }}" name="hours" maxlength="2" placeholder="tuntia"><br>
+    <input class="field" type="text" value="{{ post.movie_hours }}" name="hours" maxlength="2" placeholder="tuntia"><br>
     {% else %}
-    <input type="text" name="hours" maxlength="2" placeholder="tuntia"><br>
+    <input class="field" type="text" name="hours" maxlength="2" placeholder="tuntia"><br>
     {% endif %}
     {% if post.movie_minutes != None %}
-    <input type="text" value="{{ post.movie_minutes }}" name="minutes" maxlength="2" placeholder="minuuttia">
+    <input class="field" type="text" value="{{ post.movie_minutes }}" name="minutes" maxlength="2" placeholder="minuuttia">
     {% else %}
-    <input type="text" name="minutes" maxlength="2" placeholder="minuuttia">
+    <input class="field" type="text" name="minutes" maxlength="2" placeholder="minuuttia">
     {% endif %}<br><br>
 
     <label for="grade">Arvosana 1 - 10</label><br>
-    <input type="text" name="grade" maxlength="3">
-
+    {% if post.rating != None %}
+    <input class="field" type="text" value="{{ post.rating }}" name="grade" maxlength="3">
+    {% else %}
+    <input class="field" type="text" name="grade" maxlength="3">
+    {% endif %}
     <br><br>
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-    <input type="submit" value="Tallenna"></input>
+    <input class="button" type="submit" value="Tallenna"></input>
   </form>
 </div>
 {% endblock %}

@@ -139,3 +139,13 @@ textarea.field{
     border-right: 3px solid white;
     border-bottom: 3px solid white;
 }
+
+select.field{
+    text-decoration: none;
+    padding: 5px;
+    background-color: #d6d6d6;
+    border-top: 3px solid black;
+    border-left: 3px solid black;
+    border-right: 3px solid white;
+    border-bottom: 3px solid white;
+}

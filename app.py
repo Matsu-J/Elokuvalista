@@ -40,6 +40,8 @@ def sorted():
     greeting = greet.random_greeting()
     try:
         sort_by = request.form["sort"]
+        if sort_by == "0":
+            return redirect("/")
         if sort_by == "1":
             sorted_by = "Vanhin ensin"
             posts = feed.oldest_first()

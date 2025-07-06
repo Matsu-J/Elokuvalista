@@ -1,26 +1,12 @@
 {% extends "feed/base.html" %}
 
 {% block title %}Elokuvalista - Tulokset haulle {{ query }}{%endblock%}
+{% block extra_buttons %}<a class="nav_button" href="/">Palaa etusivulle</a>{% endblock %}
 {% block messages %}{{ super () }}{% endblock %}
 
 {% block options %}
-  <div class="options">
-    <h3>Tulokset haulle {{ query }}</h3>
-    <form action="/search" method="get">
-      <p>Hae elokuvia</p>
-      <input class="field" type="text" name="query">
-      <input class="button" type="submit" value="Hae">
-    </form>
-    <br>
-    <a class="nav_button" href="/">Palaa etusivulle</a>
-    </form>
-  </div>
+  {{ super () }}
 {% endblock %}
+{% block info %}<h3>Tulokset haulle {{ query }}</h3>{%endblock%}    
 
-<hr> 
-  
-
-  <br>
-{% block posts %}
-  {{ super() }}
-{% endblock %}
+{% block posts %}{{ super() }}{% endblock %}

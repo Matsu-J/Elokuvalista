@@ -1,35 +1,12 @@
 {% extends "feed/base.html" %}
 
 {% block title %}Elokuvalista - {{ sorted_by }}{% endblock %}
-
+{% block extra_buttons %}<a class="nav_button" href="/">Palaa etusivulle</a>{% endblock %}
 {% block messages %}{{ super () }}{% endblock %}
 
 {% block options %}
-  <div class="options">
-    <div>
-      <form action="/search" method="get">
-        <p>Hae elokuvia</p>
-        <input class="field" type="text" name="query">
-        <input class="button" type="submit" value="Hae">
-      </form>
-
-      <p>Lajiteltu: {{ sorted_by }}</p>
-
-      <form action="/sorted" method="post">
-        <input type="radio" name="sort" value="1" /> Vanhin ensin
-        <input type="radio" name="sort" value="2" /> Uusin ensin
-        <input type="radio" name="sort" value="3" /> Pisin ensin
-        <input type="radio" name="sort" value="4" /> Lyhyin ensin
-        <br><br>
-        <input class="button" type="submit" value="Lajittele">
-      </form><br>
-      <a class="nav_button" href="/">Palaa etusivulle</a>
-      </div>
-  </div>
-{% endblock %}
-
-<hr> 
-  
-{% block posts %}
   {{ super() }}
 {% endblock %}
+{% block info %}<h3>Lajiteltu: {{ sorted_by }}</h3>{%endblock%}
+  
+{% block posts %}{{ super() }}{% endblock %}

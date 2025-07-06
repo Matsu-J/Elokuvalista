@@ -4,7 +4,9 @@
 
   {% block greeting %}{{ greeting }}{% endblock %}
 
+
   {% block navbuttons %}
+    {% block extra_buttons %}{% endblock %}
     {% if session.username %}
       <a class="nav_button" href="/add_movie">Lisää elokuva listalle</a>
       <a class="nav_button" href="/user/{{ session.user_id }}">Oma profiili</a>
@@ -15,8 +17,8 @@
     {% endif %}
   {% endblock %}
 
+  
   {% block site_content %}
-  <div class="content">
   
     {% block messages %}
       {% for message in get_flashed_messages() %}
@@ -26,9 +28,28 @@
       {% endfor %}
     {% endblock %}
 
-
-    {% block options %}
-    {% endblock %}
+    <div class="options">
+      {% block options %}
+        {% block info %}{% endblock %}
+        <form action="/search" method="get">
+          <p>Hae elokuvia</p>
+          <input class="field" type="text" name="query">
+          <input class="button" type="submit" value="Hae">
+        </form>
+        
+        <form action="/sorted" method="post">
+          <p>Lajittele syöte:</p>
+          <select class="field" name="sort">
+            <option value="0">Oletus</option>
+            <option value="1">Vanhin ensin</option>
+            <option value="2">Uusin ensin</option>
+            <option value="3">Pisin ensin</option>
+            <option value="4">Lyhyin ensin</option>
+          </select>
+          <input class="button" type="submit" value="Lajittele">
+        </form>
+      {% endblock %}
+    </div>
 
 
     {% block posts %}
@@ -66,5 +87,5 @@
       {% block pages %}
       {% endblock %}
     </div>
-  </div>
+
   {% endblock %}

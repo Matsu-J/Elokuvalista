@@ -1,8 +1,12 @@
 # Elokuvalista
-![preview](preview.png)
-
-
 Sovelluksen idea on olla lista, johon käyttäjät voivat lisätä elokuvia joita he ovat katsoneet tai haluavat katsoa. Käyttäjät voivat arvostella elokuvat ateikolla 0-10. Lisäksi elokvat voi järjestää muun muassa,pituuden tai julkaisuvuoden mukaisessa järjestyksessä.
+
+![preview](Frontpage.png)
+
+![preview](Userpage.png)
+
+![preview](Post.png)
+
 
 ## Sovelluksen toimintojen tilanne:
 

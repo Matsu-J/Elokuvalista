@@ -17,7 +17,7 @@
       <p>Julkaisuvuosi: {{ post.release_year }}</p>
       {% endif %}
 
-      {% if post.movie_hours %}
+      {% if post.movie_hours or post.movie_minutes %}
       <p>Kesto: {{ post.movie_hours }} tuntia {{ post.movie_minutes }} minuuttia</p>
       {% endif %}
 

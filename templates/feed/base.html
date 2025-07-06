@@ -21,7 +21,7 @@
     {% block messages %}
       {% for message in get_flashed_messages() %}
       <div class="message">
-        <p><b>{{ message }}</b></p>
+        <p class="post_text"><b>{{ message }}</b></p>
       </div>
       {% endfor %}
     {% endblock %}
@@ -51,7 +51,12 @@
           {% if post.rating %}
             <p class="post_text">Käyttäjän arvio: {{ post.rating }} / 10</p>
           {% endif %}
-          <p class="post_text">({{ post.edited_at }})</p>
+
+          <p class="post_text">Lisätty: ({{ post.created_at }})</p>
+
+          {% if post.edited_at %}
+           <p class="post_text">Muokattu: ({{ post.edited_at }})</p>
+          {% endif %}
         </div>
       {% endfor %}
     {% endblock %}

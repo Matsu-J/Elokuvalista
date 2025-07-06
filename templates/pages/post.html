@@ -70,9 +70,12 @@
             - ({{ comment.rating }} / 10)
           {% endif %}
         
-          
-        <p>{{ comment.content }}</p>
-        <p>{{ comment.edited_at }}</p>
+        <p class="post_text">{{ comment.content }}</p>
+        <p class="post_text">Lisätty: ({{ comment.created_at }})</p>
+
+        {% if comment.edited_at %}
+          <p class="post_text">Muokattu: ({{ comment.edited_at }})</p>
+        {% endif %}
         {% if session.user_id == comment.user_id %}
         <a class="nav_button" href="/edit_comment/{{ comment.id }}">Muokkaa</a>
         <a class="nav_button" href="/delete_comment/{{ comment.id }}">Poista</a>

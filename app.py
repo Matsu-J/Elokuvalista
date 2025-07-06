@@ -227,11 +227,11 @@ def create_post():
         flash(error)
         return redirect("/add_movie")
 
-    edited_at = datetime.now().isoformat(" ", "minutes")
+    created_at = datetime.now().isoformat(" ", "minutes")
     user_id = users.get_user_id(session["username"])
 
     try:
-        feed.create_post([user_id, title, year, hours, minutes, grade, edited_at])
+        feed.create_post([user_id, title, year, hours, minutes, grade, created_at])
         stats.action("post created")
         flash("Elokuva lisätty!")
         return redirect("/")

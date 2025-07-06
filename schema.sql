@@ -15,10 +15,11 @@ CREATE TABLE posts (
     user_id INTEGER REFERENCES users,
     title TEXT,
     release_year INTEGER DEFAULT NULL,
-    movie_hours TEXT DEFAULT NULL,
-    movie_minutes TEXT DEFAULT NULL,
+    movie_hours INTEGER DEFAULT NULL,
+    movie_minutes INTEGER DEFAULT NULL,
     rating TEXT DEFAULT NULL,
-    edited_at TEXT
+    created_at TEXT,
+    edited_at TEXT DEFAULT NULL
 );
 
 CREATE TABLE comments (
@@ -27,5 +28,6 @@ CREATE TABLE comments (
     user_id INTEGER REFERENCES users,
     content TEXT,
     rating TEXT DEFAULT NULL,
-    edited_at TEXT
+    created_At TEXT,
+    edited_at TEXT DEFAULT NULL
 );

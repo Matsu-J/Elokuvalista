@@ -1,8 +1,11 @@
 {% extends "pages/base.html" %}
 
   {% block title %}Elokuvalista - {{ username }}{% endblock %}
+
   {% block greeting %}Käyttäjä {{ username }}{% endblock %}
+
   {% block navbuttons %}<a class="nav_button" href="/">Palaa etusivulle</a>{% endblock %}
+  
   {% block errors %}{{ super() }}{% endblock %}
  
   {% block description %}

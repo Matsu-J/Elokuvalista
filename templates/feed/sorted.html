@@ -3,10 +3,7 @@
 {% block title %}Elokuvalista - {{ sorted_by }}{% endblock %}
 {% block extra_buttons %}<a class="nav_button" href="/">Palaa etusivulle</a>{% endblock %}
 {% block messages %}{{ super () }}{% endblock %}
-
-{% block options %}
-  {{ super() }}
-{% endblock %}
+{% block options %}{{ super() }}{% endblock %}
 {% block info %}<h3>Lajiteltu: {{ sorted_by }}</h3>{%endblock%}
   
 {% block posts %}{{ super() }}{% endblock %}

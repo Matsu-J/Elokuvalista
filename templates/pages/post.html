@@ -6,9 +6,8 @@
 
   {% block navbuttons %}<a class="nav_button" href="/">Palaa etusivulle</a>{% endblock %}
 
-  {% block errors %}{{ super() }}{% endblock %}
-
   {% block site_content %}
+    {% block messages %}{{ super() }}{% endblock %}
     {% block description %}
     <div class="options">
       <h2>{{ post.title }}</h2>

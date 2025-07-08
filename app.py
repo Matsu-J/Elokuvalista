@@ -2,7 +2,7 @@ from flask import Flask
 from flask import redirect, render_template, request, session, abort, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-import math, secrets, feed, users, validate, greet, stats, config
+import math, secrets, feed, users, validate, greet, stats, config, markupsafe
 
 
 app = Flask(__name__)
@@ -183,6 +183,12 @@ def user_page(user_id):
 ###########################
 #Funtions related to posts#
 ###########################
+
+@app.template_filter()
+def show_lines(content):
+    content = str(markupsafe.escape(content))
+    content = content.replace("\n", "<br />")
+    return markupsafe.Markup(content)
 
 
 @app.route("/add_movie")

@@ -31,7 +31,8 @@ Sovelluksen idea on olla lista, johon käyttäjät voivat lisätä elokuvia joit
 ## Asennusohjeet:
 
 Vaatimukset:
-Python
+- Python
+- Poetry
 
 Lataa koodi esimerkiksi git clone komennolla
 
@@ -41,19 +42,14 @@ git clone https://github.com/Matsu-J/Elokuvalista.git
 
 Navigoi kansioon johon latasit koodin
 
-Luo ja käynnistä virtuaaliympäristö
+Asenna projektin riippuvuudet ja käynnistä virtuaaliympäristö
 
 ```
-python3 -m venv venv
+poetry install
 
-source venv/bin/activate
+eval $(poetry env activate)
 ```
 
-Asenna Flask-kirjasto
-
-```
-pip install flask
-```
 
 Luo sovelluksen tietokanta
 ```

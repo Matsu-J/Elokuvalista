@@ -95,8 +95,11 @@ def register():
     return render_template("form/register.html")
 
 
-@app.route("/create_user", methods=["POST"])
+@app.route("/create_user", methods=["POST", "GET"])
 def create_user():
+    if request.method == "GET":
+        return redirect("/register")
+
     username = request.form["username"]
     password = request.form["password"]
     confirmed_password = request.form["password_confirm"]
@@ -110,7 +113,7 @@ def create_user():
         return redirect("/register")
         
     hashed_password = generate_password_hash(password)
-
+    
     try:
         users.create_user(username, hashed_password)
     except:

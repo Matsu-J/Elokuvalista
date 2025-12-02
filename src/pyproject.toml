@@ -1,0 +1,17 @@
+[project]
+name = "src"
+version = "0.1.0"
+description = "A simple movie watchlist app made using Python, Flask, HTML and SQL as a part of the course Tietokannat ja Web ohjelmointi"
+authors = [
+    {name = "Resources"}
+]
+readme = "README.md"
+requires-python = "^3.12"
+dependencies = [
+    "flask (>=3.1.2,<4.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
